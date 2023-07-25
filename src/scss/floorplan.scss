@@ -1,0 +1,54 @@
+@import url('https://fonts.googleapis.com/css?family=Nunito+Sans:300,400,600,700,800&display=swap');
+
+// Bootstrap mixins and functions
+@import "~bootstrap/scss/mixins";
+@import "~bootstrap/scss/functions";
+
+// Change variables here
+@import "floorplan/variables";
+
+// Bootstrap
+@import "~bootstrap/scss/bootstrap";
+
+// Vendor
+@import "floorplan/vendor";
+
+// Mixins & functions
+@import "floorplan/mixins";
+@import "floorplan/functions";
+
+// Utilities
+@import "floorplan/reboot";
+@import "floorplan/utilities";
+
+// Layout
+@import "floorplan/layout";
+
+// Components
+@import "floorplan/components";
+
+$fa-font-path: '~@fortawesome/fontawesome-free/webfonts';
+@import "@fortawesome/fontawesome-free/scss/fontawesome.scss";
+@import "@fortawesome/fontawesome-free/scss/solid.scss";
+@import "@fortawesome/fontawesome-free/scss/brands.scss";
+
+html,body{
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+  -webkit-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+.console-log{
+  position: absolute;
+  top: 100px;
+  left: 10px;
+  pointer-events: none;
+}
+
+.btn-disabled{
+ opacity: 0.4;
+ cursor:not-allowed;   
+}

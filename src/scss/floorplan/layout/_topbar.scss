@@ -1,0 +1,54 @@
+.topbar{
+  z-index: 1;
+  // height: 65px;
+  background-color: #fff;
+  font-size: 12px;
+  color: #000;
+  text-align: center;
+  -webkit-user-select: none; /* Safari */
+  -ms-user-select: none; /* IE 10 and IE 11 */
+  user-select: none; /* Standard syntax */
+  overflow: hidden;
+  overflow-x: auto;
+  padding: 5px 10px;
+  padding-right: 70px;
+  .topbar-name{
+    width: 60px;
+  }
+  .input-board-container{
+    max-width: 320px;
+    input{
+      height: 30px;
+    }
+    .input-board-cell{
+      color: #fff;
+      background-color: gray;
+      padding: 4;
+      cursor: pointer;
+      // margin-bottom: 5px;
+      aspect-ratio: 1.5;
+      font-size: 20px;
+      border-radius: 4px;
+    }
+  }
+  
+  input{
+    width: 70px;
+    height: 40px;
+    // font-size: 10px;
+    padding: 3px;
+    border-radius: 0;
+    // padding: 5px;
+    i{
+      font-size: 25px;
+    }
+  }
+  .lwh-picker{
+    background-color: #fff;
+    padding: 5px 10px;
+    border: 1px solid #e7e7e7;
+    font-size: 15px;
+    width: 65px;
+    overflow: hidden;
+  }
+}

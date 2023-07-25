@@ -1,0 +1,18 @@
+.zoombar{
+  right: 70px;
+  bottom: 60px;
+  z-index: 1;
+  background-color: #616161;
+  font-size: 14px;
+  color: #fff;
+  text-align: center;
+  -webkit-user-select: none; /* Safari */
+  -ms-user-select: none; /* IE 10 and IE 11 */
+  user-select: none; /* Standard syntax */
+  .zoombar-item{
+    padding: 7px 10px;
+    i{
+      font-size: 20px;
+    }
+  }
+}
