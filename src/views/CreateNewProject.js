@@ -50,7 +50,7 @@ function CreateNewProject(props) {
   function updateFieldIfNotNull(fieldName, value, precision = 10) {
     if (value != null) {
       document.getElementById(fieldName).innerHTML = value.toFixed(precision);
-      setLabaObj({ ...labanObj, [fieldName]: 1 });
+      setLabaObj({ ...labanObj, fieldName: value.toFixed(precision) });
     }
   }
 
@@ -68,16 +68,16 @@ function CreateNewProject(props) {
       event.accelerationIncludingGravity.z
     );
 
-    // updateFieldIfNotNull("Accelerometer_x", event.acceleration.x);
-    // updateFieldIfNotNull("Accelerometer_y", event.acceleration.y);
-    // updateFieldIfNotNull("Accelerometer_z", event.acceleration.z);
+    updateFieldIfNotNull("Accelerometer_x", event.acceleration.x);
+    updateFieldIfNotNull("Accelerometer_y", event.acceleration.y);
+    updateFieldIfNotNull("Accelerometer_z", event.acceleration.z);
 
-    // updateFieldIfNotNull("Accelerometer_i", event.interval, 2);
+    updateFieldIfNotNull("Accelerometer_i", event.interval, 2);
 
-    // updateFieldIfNotNull("Gyroscope_z", event.rotationRate.alpha);
-    // updateFieldIfNotNull("Gyroscope_x", event.rotationRate.beta);
-    // updateFieldIfNotNull("Gyroscope_y", event.rotationRate.gamma);
-    // incrementEventCount();
+    updateFieldIfNotNull("Gyroscope_z", event.rotationRate.alpha);
+    updateFieldIfNotNull("Gyroscope_x", event.rotationRate.beta);
+    updateFieldIfNotNull("Gyroscope_y", event.rotationRate.gamma);
+    incrementEventCount();
   }
 
   let is_running = false;
