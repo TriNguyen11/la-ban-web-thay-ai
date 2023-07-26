@@ -40,11 +40,11 @@ function CreateNewProject(props) {
     updateFieldIfNotNull("y", event.gamma);
 
     setLabaObj({
-      ["z"]: event.alpha.toFixed(10),
-      ["x"]: event.beta.toFixed(10),
-      ["y"]: event.gamma.toFixed(10),
+      ["z"]: event.alpha?.toFixed(10),
+      ["x"]: event.beta?.toFixed(10),
+      ["y"]: event.gamma?.toFixed(10),
     });
-    document.getElementById("angel").innerHTML = "123123";
+    // document.getElementById("angel").innerHTML = "123123";
     let tmp =
       90 -
       todos.caculateAngle({ x: event.beta, y: event.gamma, z: event.alpha });
@@ -52,18 +52,12 @@ function CreateNewProject(props) {
       tmp = 360 + tmp;
     }
     setExample(tmp);
-    document.getElementById("example").innerHTML = tmp.toString();
-    document.getElementById("angel").innerHTML = (
-      Math.round((360 - tmp) * 10) / 10
-    ).toString();
+    // document.getElementById("example").innerHTML = tmp.toString();
+    // document.getElementById("angel").innerHTML = (
+    //   Math.round((360 - tmp) * 10) / 10
+    // ).toString();
 
     setAngle(Math.round((360 - tmp) * 10) / 10);
-  }
-
-  function incrementEventCount() {
-    let counterElement = document.getElementById("num-observed-events");
-    let eventCount = parseInt(counterElement.innerHTML);
-    counterElement.innerHTML = eventCount + 1;
   }
 
   async function updateFieldIfNotNull(fieldName, value, precision = 10) {
@@ -95,7 +89,6 @@ function CreateNewProject(props) {
     updateFieldIfNotNull("Gyroscope_z", event.rotationRate.alpha);
     updateFieldIfNotNull("Gyroscope_x", event.rotationRate.beta);
     updateFieldIfNotNull("Gyroscope_y", event.rotationRate.gamma);
-    incrementEventCount();
   }
 
   let is_running = false;
@@ -133,22 +126,10 @@ function CreateNewProject(props) {
     ) {
       DeviceMotionEvent.requestPermission();
     }
-
-    if (is_running) {
-      window.removeEventListener("devicemotion", handleMotion);
-      window.removeEventListener("deviceorientation", handleOrientation);
-      demo_button.innerHTML = "Start demo";
-      demo_button.classList.add("btn-success");
-      demo_button.classList.remove("btn-danger");
-      is_running = false;
-    } else {
-      window.addEventListener("devicemotion", handleMotion);
-      window.addEventListener("deviceorientation", handleOrientation);
-      document.getElementById("start_demo").innerHTML = "Stop demo";
-      demo_button.classList.remove("btn-success");
-      demo_button.classList.add("btn-danger");
-      is_running = true;
-    }
+    // window.addEventListener("devicemotion", handleMotion);
+    window.addEventListener("deviceorientation", handleOrientation);
+    // demo_button.classList.remove("btn-success");
+    // demo_button.classList.add("btn-danger");
   }, []);
   // console.log(labanObj.Accelerometer_z, "labanObj.Accelerometer_z");
   return (
@@ -408,7 +389,7 @@ function CreateNewProject(props) {
           );
         })}
       </div>
-      <main role="main" className="container">
+      {/* <main role="main" className="container">
         <div className="p-3 mb-2 bg-secondary" id="demo-div">
           <a
             id="start_demo"
@@ -547,7 +528,7 @@ function CreateNewProject(props) {
         <div id="angel">angelhtml :</div>
         <div> angel: {angle && JSON.stringify(angle)}</div>
         <div>{labanObj ? labanObj?.z : 0}deg</div>
-      </main>
+      </main> */}
     </>
   );
 }
