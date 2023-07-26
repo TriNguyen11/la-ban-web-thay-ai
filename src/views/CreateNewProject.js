@@ -39,12 +39,10 @@ function CreateNewProject(props) {
     updateFieldIfNotNull("Orientation_b", event.beta);
     updateFieldIfNotNull("Orientation_g", event.gamma);
     setLabaObj({
-      ["Orientation_a"]: value.toFixed(event.alpha),
-      ["Orientation_b"]: value.toFixed(event.beta),
-      ["Orientation_g"]: value.toFixed(event.gamma),
+      ["Orientation_a"]: event.alpha.toFixed(10),
+      ["Orientation_b"]: event.beta.toFixed(10),
+      ["Orientation_g"]: event.gamma.toFixed(10),
     });
-
-    incrementEventCount();
   }
 
   function incrementEventCount() {
