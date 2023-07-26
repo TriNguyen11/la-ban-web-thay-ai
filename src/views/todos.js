@@ -29,12 +29,15 @@ export default {
     return [{ name: "Mặc định", image: "/lap-cuc/mac-dinh.png" }];
   },
   caculateAngle: (magnetometer) => {
+    let angle;
     if (magnetometer) {
-      let { x, y, z } = magnetometer;
-      if (Math.atan2(y, x) >= 0) {
-        angle = Math.atan2(y, x) * (180 / Math.PI);
+      // let { x, y, z } = magnetometer;
+      if (Math.atan2(magnetometer.y, magnetometer.x) >= 0) {
+        angle = Math.atan2(magnetometer.y, magnetometer.x) * (180 / Math.PI);
       } else {
-        angle = (Math.atan2(y, x) + 2 * Math.PI) * (180 / Math.PI);
+        angle =
+          (Math.atan2(magnetometer.y, magnetometer.x) + 2 * Math.PI) *
+          (180 / Math.PI);
       }
     }
     const re = Math.round(angle * 10) / 10;
