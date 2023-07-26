@@ -22,7 +22,7 @@ function CreateNewProject(props) {
   const [labanObj, setLabaObj] = React.useState({});
   // const labanMaTrix = useValue(Skia.Matrix());
 
-  const [snapshot, setSnapshot] = React.useState("");
+  const [example, setExample] = React.useState();
   // let _angle = useSharedValue(0);
   // _angle.addListener(({value}) => setAngle(Math.round(value)));
 
@@ -35,13 +35,21 @@ function CreateNewProject(props) {
     }
   };
   async function handleOrientation(event) {
-    updateFieldIfNotNull("Orientation_a", event.alpha);
-    updateFieldIfNotNull("Orientation_b", event.beta);
-    updateFieldIfNotNull("Orientation_g", event.gamma);
+    updateFieldIfNotNull("z", event.alpha);
+    updateFieldIfNotNull("x", event.beta);
+    updateFieldIfNotNull("y", event.gamma);
+    let tmp =
+      90 -
+      todos.caculateAngle({ x: event.beta, y: event.gamma, z: event.alpha });
+    if (tmp < 0) {
+      tmp = 360 + tmp;
+    }
+    setExample(tmp);
+    setAngle(Math.round((360 - tmp) * 10) / 10);
     setLabaObj({
-      ["Orientation_a"]: event.alpha.toFixed(10),
-      ["Orientation_b"]: event.beta.toFixed(10),
-      ["Orientation_g"]: event.gamma.toFixed(10),
+      ["z"]: event.alpha.toFixed(10),
+      ["x"]: event.beta.toFixed(10),
+      ["y"]: event.gamma.toFixed(10),
     });
   }
 
@@ -176,15 +184,15 @@ function CreateNewProject(props) {
           <h4>Orientation</h4>
           <ul>
             <li>
-              X-axis (&beta;): <span id="Orientation_b">0</span>
+              X-axis (&beta;): <span id="x">0</span>
               <span>&deg;</span>
             </li>
             <li>
-              Y-axis (&gamma;): <span id="Orientation_g">0</span>
+              Y-axis (&gamma;): <span id="y">0</span>
               <span>&deg;</span>
             </li>
             <li>
-              ASD-axis (&alpha;): <span id="Orientation_a">0</span>
+              ASD-axis (&alpha;): <span id="z">0</span>
               <span>&deg;</span>
             </li>
           </ul>
@@ -260,8 +268,10 @@ function CreateNewProject(props) {
             </li>
           </ul> */}
         </div>
-        <div>{JSON.stringify(labanObj)}</div>
-        <div>{labanObj ? labanObj?.Orientation_a : 0}deg</div>
+        {/* <div>{JSON.stringify(labanObj)}</div> */}
+        <div>example: {example && JSON.stringify(example)}</div>
+        <div> angel: {angle && JSON.stringify(angle)}</div>
+        <div>{labanObj ? labanObj?.z : 0}deg</div>
       </main>
     </>
   );
