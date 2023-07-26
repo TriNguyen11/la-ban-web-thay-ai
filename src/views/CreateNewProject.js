@@ -125,7 +125,31 @@ function CreateNewProject(props) {
   const directionOppositeName = todos.getDirectionName(angleOposite);
   const directionOppositePhongThuyName =
     todos.getDirectionPhongThuyName(angleOposite);
-  React.useEffect(() => {}, []);
+  React.useEffect(() => {
+    // Request permission for iOS 13+ devices
+    if (
+      DeviceMotionEvent &&
+      typeof DeviceMotionEvent.requestPermission === "function"
+    ) {
+      DeviceMotionEvent.requestPermission();
+    }
+
+    if (is_running) {
+      window.removeEventListener("devicemotion", handleMotion);
+      window.removeEventListener("deviceorientation", handleOrientation);
+      demo_button.innerHTML = "Start demo";
+      demo_button.classList.add("btn-success");
+      demo_button.classList.remove("btn-danger");
+      is_running = false;
+    } else {
+      window.addEventListener("devicemotion", handleMotion);
+      window.addEventListener("deviceorientation", handleOrientation);
+      document.getElementById("start_demo").innerHTML = "Stop demo";
+      demo_button.classList.remove("btn-success");
+      demo_button.classList.add("btn-danger");
+      is_running = true;
+    }
+  }, []);
   // console.log(labanObj.Accelerometer_z, "labanObj.Accelerometer_z");
   return (
     <>
@@ -384,7 +408,7 @@ function CreateNewProject(props) {
           );
         })}
       </div>
-      {/* <main role="main" className="container">
+      <main role="main" className="container">
         <div className="p-3 mb-2 bg-secondary" id="demo-div">
           <a
             id="start_demo"
@@ -523,7 +547,7 @@ function CreateNewProject(props) {
         <div id="angel">angelhtml :</div>
         <div> angel: {angle && JSON.stringify(angle)}</div>
         <div>{labanObj ? labanObj?.z : 0}deg</div>
-      </main> */}
+      </main>
     </>
   );
 }
