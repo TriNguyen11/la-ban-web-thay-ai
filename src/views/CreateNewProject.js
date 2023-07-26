@@ -143,7 +143,7 @@ function CreateNewProject(props) {
               }
 
               if (is_running) {
-                window.removeEventListener("devicemotion", handleMotion);
+                // window.removeEventListener("devicemotion", handleMotion);
                 window.removeEventListener(
                   "deviceorientation",
                   handleOrientation
@@ -153,7 +153,7 @@ function CreateNewProject(props) {
                 demo_button.classList.remove("btn-danger");
                 is_running = false;
               } else {
-                window.addEventListener("devicemotion", handleMotion);
+                // window.addEventListener("devicemotion", handleMotion);
                 window.addEventListener("deviceorientation", handleOrientation);
                 document.getElementById("start_demo").innerHTML = "Stop demo";
                 demo_button.classList.remove("btn-success");
@@ -181,7 +181,7 @@ function CreateNewProject(props) {
               <span>&deg;</span>
             </li>
             <li>
-              Z-axis (&alpha;): <span id="Orientation_a">0</span>
+              ASD-axis (&alpha;): <span id="Orientation_a">0</span>
               <span>&deg;</span>
             </li>
           </ul>
