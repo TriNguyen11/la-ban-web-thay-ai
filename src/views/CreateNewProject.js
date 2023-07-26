@@ -38,19 +38,19 @@ function CreateNewProject(props) {
     updateFieldIfNotNull("z", event.alpha);
     updateFieldIfNotNull("x", event.beta);
     updateFieldIfNotNull("y", event.gamma);
-    let tmp =
-      90 -
-      todos.caculateAngle({ x: event.beta, y: event.gamma, z: event.alpha });
-    if (tmp < 0) {
-      tmp = 360 + tmp;
-    }
-    setExample(tmp);
-    document.getElementById("example").innerHTML = tmp;
-    document.getElementById("angel").innerHTML = (
-      Math.round((360 - tmp) * 10) / 10
-    ).toString();
+    // let tmp =
+    //   90 -
+    //   todos.caculateAngle({ x: event.beta, y: event.gamma, z: event.alpha });
+    // if (tmp < 0) {
+    //   tmp = 360 + tmp;
+    // }
+    // setExample(tmp);
+    // document.getElementById("example").innerHTML = tmp;
+    // document.getElementById("angel").innerHTML = (
+    //   Math.round((360 - tmp) * 10) / 10
+    // ).toString();
 
-    setAngle(Math.round((360 - tmp) * 10) / 10);
+    // setAngle(Math.round((360 - tmp) * 10) / 10);
     setLabaObj({
       ["z"]: event.alpha.toFixed(10),
       ["x"]: event.beta.toFixed(10),
