@@ -19,7 +19,7 @@ function CreateNewProject(props) {
   const [angle, setAngle] = React.useState(0);
   // const [docanbang,setDoCanBang] = React.useState({x: 0,y:0,z:0})
   const [laban, setLaban] = React.useState(null);
-  const [labanObj, setLabaObj] = React.useState();
+  const [labanObj, setLabaObj] = React.useState({});
   // const labanMaTrix = useValue(Skia.Matrix());
 
   const [snapshot, setSnapshot] = React.useState("");
@@ -257,6 +257,7 @@ function CreateNewProject(props) {
             </li>
           </ul> */}
         </div>
+        <div>{JSON.stringify(labanObj)}</div>
       </main>
     </>
   );
