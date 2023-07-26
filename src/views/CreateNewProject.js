@@ -45,6 +45,11 @@ function CreateNewProject(props) {
       tmp = 360 + tmp;
     }
     setExample(tmp);
+    document.getElementById("example").innerHTML = tmp;
+    document.getElementById("angel").innerHTML = (
+      Math.round((360 - tmp) * 10) / 10
+    ).toString();
+
     setAngle(Math.round((360 - tmp) * 10) / 10);
     setLabaObj({
       ["z"]: event.alpha.toFixed(10),
@@ -268,8 +273,9 @@ function CreateNewProject(props) {
             </li>
           </ul> */}
         </div>
-        {/* <div>{JSON.stringify(labanObj)}</div> */}
-        <div>example: {example && JSON.stringify(example)}</div>
+        <div>{JSON.stringify(labanObj)}</div>
+        <div id="example">example: {example && JSON.stringify(example)}</div>
+        <div id="angel">angelhtml :</div>
         <div> angel: {angle && JSON.stringify(angle)}</div>
         <div>{labanObj ? labanObj?.z : 0}deg</div>
       </main>
