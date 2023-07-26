@@ -44,6 +44,7 @@ function CreateNewProject(props) {
       ["x"]: event.beta.toFixed(10),
       ["y"]: event.gamma.toFixed(10),
     });
+    document.getElementById("angel").innerHTML = "123123";
     let tmp =
       90 -
       todos.caculateAngle({ x: event.beta, y: event.gamma, z: event.alpha });
