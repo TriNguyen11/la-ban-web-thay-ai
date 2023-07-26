@@ -19,7 +19,7 @@ function CreateNewProject(props) {
   const [angle, setAngle] = React.useState(0);
   // const [docanbang,setDoCanBang] = React.useState({x: 0,y:0,z:0})
   const [laban, setLaban] = React.useState(null);
-  const [labanWidth, setLabanWidth] = React.useState(0);
+  const [labanObj, setLabaObj] = React.useState();
   // const labanMaTrix = useValue(Skia.Matrix());
 
   const [snapshot, setSnapshot] = React.useState("");
@@ -48,8 +48,10 @@ function CreateNewProject(props) {
   }
 
   function updateFieldIfNotNull(fieldName, value, precision = 10) {
-    if (value != null)
+    if (value != null) {
       document.getElementById(fieldName).innerHTML = value.toFixed(precision);
+      setLabaObj({ ...labanObj, [fieldName]: value.toFixed(precision) });
+    }
   }
 
   function handleMotion(event) {
@@ -106,15 +108,19 @@ function CreateNewProject(props) {
   const directionOppositePhongThuyName =
     todos.getDirectionPhongThuyName(angleOposite);
   React.useEffect(() => {}, []);
-
+  // console.log(labanObj.Accelerometer_z, "labanObj.Accelerometer_z");
   return (
     <>
       <div>
-        {/* <Image
+        <Image
           src={"/la-ban/24-son-huong.png"}
           // src={"../assets/la-ban/60-hoa-giap.png"}
-          style={{ width: "100%", height: "50%" }}
-        /> */}
+          style={{
+            width: "100%",
+            height: "50%",
+            rotate: `${labanObj ? labanObj?.Accelerometer_z : 0}deg`,
+          }}
+        />{" "}
         asdsds
       </div>
       <main role="main" className="container">
@@ -124,6 +130,7 @@ function CreateNewProject(props) {
             className="btn btn-lg btn-success py-1"
             href="#"
             role="button"
+            style={{}}
             onClick={(e) => {
               e.preventDefault();
 
@@ -179,7 +186,7 @@ function CreateNewProject(props) {
             </li>
           </ul>
 
-          <h4>Accelerometer</h4>
+          {/* <h4>Accelerometer</h4>
           <ul>
             <li>
               X-axis: <span id="Accelerometer_x">0</span>
@@ -248,7 +255,7 @@ function CreateNewProject(props) {
               Z-axis: <span id="Gyroscope_z">0</span>
               <span>&deg;/s</span>
             </li>
-          </ul>
+          </ul> */}
         </div>
       </main>
     </>

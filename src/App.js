@@ -16,8 +16,8 @@ import Navigation from "@floorplan/system/navigation";
 import Event from "@floorplan/system/event";
 
 import { AppProvider } from "@floorplan/provider";
-import Objects from '@floorplan/views/objects/index'
-
+import Objects from "@floorplan/views/objects/index";
+import "./scss/floorplan.scss";
 const App = () => {
   return typeof document !== "undefined" ? (
     <>
@@ -47,5 +47,5 @@ export {
   Event,
   System,
   Helper,
-  Objects
+  Objects,
 };

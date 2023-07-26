@@ -28,9 +28,7 @@
 @import "floorplan/components";
 
 $fa-font-path: '~@fortawesome/fontawesome-free/webfonts';
-@import "@fortawesome/fontawesome-free/scss/fontawesome.scss";
-@import "@fortawesome/fontawesome-free/scss/solid.scss";
-@import "@fortawesome/fontawesome-free/scss/brands.scss";
+
 
 html,body{
   width: 100vw;
@@ -51,4 +49,8 @@ html,body{
 .btn-disabled{
  opacity: 0.4;
  cursor:not-allowed;   
+}
+img{
+  // background: red;
+  // transform: rotate("50deg");
 }
