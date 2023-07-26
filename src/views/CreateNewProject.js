@@ -36,8 +36,8 @@ function CreateNewProject(props) {
   };
   function handleOrientation(event) {
     updateFieldIfNotNull("Orientation_a", event.alpha);
-    updateFieldIfNotNull("Orientation_b", event.beta);
-    updateFieldIfNotNull("Orientation_g", event.gamma);
+    // updateFieldIfNotNull("Orientation_b", event.beta);
+    // updateFieldIfNotNull("Orientation_g", event.gamma);
     incrementEventCount();
   }
 
@@ -118,7 +118,7 @@ function CreateNewProject(props) {
           style={{
             width: "100%",
             height: "50%",
-            rotate: `${labanObj ? labanObj?.Orientation_g : 0}deg`,
+            rotate: `${labanObj ? labanObj?.Orientation_a : 0}deg`,
           }}
         />{" "}
         asdsds
@@ -258,7 +258,7 @@ function CreateNewProject(props) {
           </ul> */}
         </div>
         <div>{JSON.stringify(labanObj)}</div>
-        <div>{labanObj ? labanObj?.Orientation_g : 0}deg</div>
+        <div>{labanObj ? labanObj?.Orientation_a : 0}deg</div>
       </main>
     </>
   );
