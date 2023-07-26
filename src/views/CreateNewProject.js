@@ -131,7 +131,7 @@ function CreateNewProject(props) {
     navigator.userAgent.match(/AppleWebKit/);
 
   function init() {
-    startBtn.addEventListener("click", startCompass);
+    startBtn?.addEventListener("click", startCompass);
     navigator.geolocation.getCurrentPosition(locationHandler);
 
     if (!isIOS) {
