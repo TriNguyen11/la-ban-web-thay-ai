@@ -34,10 +34,16 @@ function CreateNewProject(props) {
       accelerometer.unsubscribe();
     }
   };
-  function handleOrientation(event) {
+  async function handleOrientation(event) {
     updateFieldIfNotNull("Orientation_a", event.alpha);
-    // updateFieldIfNotNull("Orientation_b", event.beta);
-    // updateFieldIfNotNull("Orientation_g", event.gamma);
+    updateFieldIfNotNull("Orientation_b", event.beta);
+    updateFieldIfNotNull("Orientation_g", event.gamma);
+    setLabaObj({
+      ["Orientation_a"]: value.toFixed(event.alpha),
+      ["Orientation_b"]: value.toFixed(event.beta),
+      ["Orientation_g"]: value.toFixed(event.gamma),
+    });
+
     incrementEventCount();
   }
 
@@ -47,10 +53,9 @@ function CreateNewProject(props) {
     counterElement.innerHTML = eventCount + 1;
   }
 
-  function updateFieldIfNotNull(fieldName, value, precision = 10) {
+  async function updateFieldIfNotNull(fieldName, value, precision = 10) {
     if (value != null) {
       document.getElementById(fieldName).innerHTML = value.toFixed(precision);
-      setLabaObj({ ...labanObj, [fieldName]: value.toFixed(precision) });
     }
   }
 
