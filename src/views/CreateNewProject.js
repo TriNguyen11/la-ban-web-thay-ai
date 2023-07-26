@@ -8,121 +8,6 @@ let accelerometer = null;
 const SHAKE_THRESHOLD = 10;
 
 function CreateNewProject(props) {
-  const docanbangRef = React.useRef();
-  const viewshotRef = React.useRef();
-  const compassPickerComponent = React.useRef();
-  const shareImageViewRef = React.useRef();
-  const [visibleSonHuongPicker, setVisibleSonHuongPicker] =
-    React.useState(false);
-  const [lock, setLock] = React.useState(false);
-  const [text, setText] = React.useState([]);
-  const [angle, setAngle] = React.useState(0);
-  // const [docanbang,setDoCanBang] = React.useState({x: 0,y:0,z:0})
-  const [laban, setLaban] = React.useState(null);
-  const [labanObj, setLabaObj] = React.useState({});
-  // const labanMaTrix = useValue(Skia.Matrix());
-
-  const [example, setExample] = React.useState();
-  // let _angle = useSharedValue(0);
-  // _angle.addListener(({value}) => setAngle(Math.round(value)));
-
-  async function handleOrientation(event) {
-    updateFieldIfNotNull("z", event.alpha);
-    updateFieldIfNotNull("x", event.beta);
-    updateFieldIfNotNull("y", event.gamma);
-    setLabaObj({
-      ["z"]: event.alpha?.toFixed(10),
-      ["x"]: event.beta?.toFixed(10),
-      ["y"]: event.gamma?.toFixed(10),
-    });
-    // document.getElementById("angel").innerHTML = "123123";
-    let tmp =
-      90 -
-      todos.caculateAngle({ x: event.beta, y: event.gamma, z: event.alpha });
-    if (tmp < 0) {
-      tmp = 360 + tmp;
-    }
-    setExample(tmp);
-    // document.getElementById("example").innerHTML = tmp.toString();
-    // document.getElementById("angel").innerHTML = (
-    //   Math.round((360 - tmp) * 10) / 10
-    // ).toString();
-
-    setAngle(Math.round((360 - tmp) * 10) / 10);
-  }
-
-  async function updateFieldIfNotNull(fieldName, value, precision = 10) {
-    if (value != null) {
-      document.getElementById(fieldName).innerHTML = value.toFixed(precision);
-    }
-  }
-
-  function handleMotion(event) {
-    updateFieldIfNotNull(
-      "Accelerometer_gx",
-      event.accelerationIncludingGravity.x
-    );
-    updateFieldIfNotNull(
-      "Accelerometer_gy",
-      event.accelerationIncludingGravity.y
-    );
-    updateFieldIfNotNull(
-      "Accelerometer_gz",
-      event.accelerationIncludingGravity.z
-    );
-
-    updateFieldIfNotNull("Accelerometer_x", event.acceleration.x);
-    updateFieldIfNotNull("Accelerometer_y", event.acceleration.y);
-    updateFieldIfNotNull("Accelerometer_z", event.acceleration.z);
-
-    updateFieldIfNotNull("Accelerometer_i", event.interval, 2);
-
-    updateFieldIfNotNull("Gyroscope_z", event.rotationRate.alpha);
-    updateFieldIfNotNull("Gyroscope_x", event.rotationRate.beta);
-    updateFieldIfNotNull("Gyroscope_y", event.rotationRate.gamma);
-  }
-
-  let is_running = false;
-  let demo_button = document.getElementById("start_demo");
-
-  // React.useEffect(() => {
-  //   const cpss = todos.getCompasses();
-  //   console.log(cpss, "cpss");
-  //   setLaban(cpss[0]);
-  //   window.addEventListener("focus", () => {});
-  //   window.addEventListener("blur", () => {
-  //     unsubscribe();
-  //   });
-  // }, []);
-
-  // const animatedStyles = useAnimatedStyle(() => {
-  //   return {
-  //     transform: [{ rotate: `${_angle.value}deg` }],
-  //   };
-  // });
-
-  // const labanDimensions = rect(0, 0, labanWidth, labanWidth);
-  // console.log(labanDimensions)
-  const directionName = todos.getDirectionName(angle);
-  const directionPhongThuyName = todos.getDirectionPhongThuyName(angle);
-  const angleOposite = angle >= 180 ? angle - 180 : 180 + angle;
-  const directionOppositeName = todos.getDirectionName(angleOposite);
-  const directionOppositePhongThuyName =
-    todos.getDirectionPhongThuyName(angleOposite);
-  React.useEffect(() => {
-    // Request permission for iOS 13+ devices
-    if (
-      DeviceMotionEvent &&
-      typeof DeviceMotionEvent.requestPermission === "function"
-    ) {
-      DeviceMotionEvent.requestPermission();
-    }
-    // window.addEventListener("devicemotion", handleMotion);
-    window.addEventListener("deviceorientation", handleOrientation);
-    // demo_button.classList.remove("btn-success");
-    // demo_button.classList.add("btn-danger");
-  }, []);
-
   const compassCircle = document.querySelector(".compass-circle");
   const myPoint = document.querySelector(".my-point");
   const startBtn = document.querySelector(".start-btn");
@@ -203,6 +88,9 @@ function CreateNewProject(props) {
   }
 
   init();
+  setTimeout(() => {
+    init();
+  }, 1000);
   return (
     // <>
     //   <Image
