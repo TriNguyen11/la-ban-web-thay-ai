@@ -128,18 +128,18 @@ function CreateNewProject(props) {
   // console.log(labanObj.Accelerometer_z, "labanObj.Accelerometer_z");
   return (
     <>
-      <div>
+      {/* <div>
         <Image
           src={"/la-ban/24-son-huong.png"}
           // src={"../assets/la-ban/60-hoa-giap.png"}
           style={{
             width: "100%",
-            height: "50%",
+            height: "20%",
             rotate: `${labanObj ? labanObj?.z : 0}deg`,
           }}
         />{" "}
         asdsds
-      </div>
+      </div> */}
       <main role="main" className="container">
         <div className="p-3 mb-2 bg-secondary" id="demo-div">
           <a
