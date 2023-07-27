@@ -124,8 +124,16 @@ function CreateNewProject(props) {
   const directionOppositeName = todos.getDirectionName(angleOposite);
   const directionOppositePhongThuyName =
     todos.getDirectionPhongThuyName(angleOposite);
-  React.useEffect(() => {}, []);
-  // console.log(labanObj.Accelerometer_z, "labanObj.Accelerometer_z");
+  React.useEffect(() => {
+    if (
+      DeviceMotionEvent &&
+      typeof DeviceMotionEvent.requestPermission === "function"
+    ) {
+      DeviceMotionEvent.requestPermission();
+    }
+    window.addEventListener("deviceorientation", handleOrientation);
+  }, []);
+  window.addEventListener("deviceorientation", handleOrientation);
   return (
     <>
       <Image
