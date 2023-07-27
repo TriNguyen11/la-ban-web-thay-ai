@@ -51,10 +51,10 @@ function CreateNewProject(props) {
       tmp = 360 + tmp;
     }
     setExample(tmp);
-    document.getElementById("example").innerHTML = tmp.toString();
-    document.getElementById("angel").innerHTML = (
-      Math.round((360 - tmp) * 10) / 10
-    ).toString();
+    // document.getElementById("example").innerHTML = tmp.toString();
+    // document.getElementById("angel").innerHTML = (
+    //   Math.round((360 - tmp) * 10) / 10
+    // ).toString();
 
     setAngle(Math.round((360 - tmp) * 10) / 10);
   }
@@ -99,7 +99,7 @@ function CreateNewProject(props) {
     ) {
       DeviceMotionEvent.requestPermission();
     }
-    DeviceMotionEvent.requestPermission();
+    // DeviceMotionEvent.requestPermission();
     window.addEventListener("deviceorientation", handleOrientation);
   }, []);
   window.addEventListener("deviceorientation", handleOrientation);
@@ -160,7 +160,7 @@ function CreateNewProject(props) {
                 style={{
                   width: 30,
                   height: 30,
-                  rotate: `${angle ? angle : 0}deg`,
+                  rotate: `${example ? example : 0}deg`,
                 }}
               />
               <i
@@ -179,7 +179,8 @@ function CreateNewProject(props) {
               color: "white",
               marginTop: 8,
             }}>
-            Hướng: {directionPhongThuyName} ({directionName})
+            Hướng: {angle}
+            {/* {directionPhongThuyName} ({directionName}) */}
           </div>
         </div>
 
