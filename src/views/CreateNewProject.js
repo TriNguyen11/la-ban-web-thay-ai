@@ -178,7 +178,14 @@ function CreateNewProject(props) {
               color: "white",
               marginTop: 8,
             }}>
-            Hướng: {directionPhongThuyName} ({directionName})
+            Hướng:{example?.toString()} ,,, {angle?.toString()}
+            {/* {directionPhongThuyName} ({directionName}) */}
+          </div>
+          <div id="example" style={{ color: "white" }}>
+            asd
+          </div>
+          <div id="angle" style={{ color: "white" }}>
+            asd
           </div>
         </div>
 

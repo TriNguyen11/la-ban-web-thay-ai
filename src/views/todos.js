@@ -29,6 +29,7 @@ export default {
     return [{ name: "Mặc định", image: "/lap-cuc/mac-dinh.png" }];
   },
   caculateAngle: (magnetometer) => {
+    console.log(magnetometer, "magnetometer");
     let angle;
     if (magnetometer) {
       // let { x, y, z } = magnetometer;
