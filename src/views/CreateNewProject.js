@@ -79,7 +79,14 @@ function CreateNewProject(props) {
       ["x"]: event.beta.toFixed(10),
       ["y"]: event.gamma.toFixed(10),
     });
-    let tmp = 90 - (await compassHeading(event.alpha, event.beta, event.gamma));
+    // let tmp = 90 -
+    let tmp = await compassHeading(
+      event.alpha.toFixed(10),
+      event.beta.toFixed(10),
+      event.gamma.toFixed(10)
+    );
+    document.getElementById("example").innerHTML = tmp.toString();
+
     var a1, a2, b1, b2;
     let angle;
     // let { x, y, z } = magnetometer;
@@ -87,10 +94,10 @@ function CreateNewProject(props) {
       tmp = 360 + tmp;
     }
     setExample(tmp);
-    document.getElementById("example").innerHTML = tmp.toString();
-    document.getElementById("angle").innerHTML = (
-      Math.round((360 - tmp) * 10) / 10
-    ).toString();
+    // document.getElementById("example").innerHTML = tmp.toString();
+    // document.getElementById("angle").innerHTML = (
+    //   Math.round((360 - tmp) * 10) / 10
+    // ).toString();
 
     setAngle(Math.round((360 - tmp) * 10) / 10);
   }
