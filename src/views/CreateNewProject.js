@@ -1,5 +1,5 @@
 import React from "react";
-import { Image } from "react-bootstrap";
+import { Button, Image } from "react-bootstrap";
 
 import todos from "./todos";
 
@@ -236,7 +236,7 @@ function CreateNewProject(props) {
           style={{
             width: "50%",
             height: "20%",
-            rotate: `${labanObj ? labanObj.z : 0}deg`,
+            rotate: `${labanObj ? labanObj?.z : 0}deg`,
           }}
         />
       </div>
