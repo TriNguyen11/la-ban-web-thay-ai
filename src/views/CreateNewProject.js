@@ -102,7 +102,6 @@ function CreateNewProject(props) {
     // DeviceMotionEvent.requestPermission();
     window.addEventListener("deviceorientation", handleOrientation);
   }, []);
-  window.addEventListener("deviceorientation", handleOrientation);
 
   // console.log(labanObj.Accelerometer_z, "labanObj.Accelerometer_z");
   return (
