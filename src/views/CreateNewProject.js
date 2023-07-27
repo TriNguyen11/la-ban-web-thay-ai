@@ -59,42 +59,10 @@ function CreateNewProject(props) {
     setAngle(Math.round((360 - tmp) * 10) / 10);
   }
 
-  function incrementEventCount() {
-    let counterElement = document.getElementById("num-observed-events");
-    let eventCount = parseInt(counterElement.innerHTML);
-    counterElement.innerHTML = eventCount + 1;
-  }
-
   async function updateFieldIfNotNull(fieldName, value, precision = 10) {
     if (value != null) {
       document.getElementById(fieldName).innerHTML = value.toFixed(precision);
     }
-  }
-
-  function handleMotion(event) {
-    updateFieldIfNotNull(
-      "Accelerometer_gx",
-      event.accelerationIncludingGravity.x
-    );
-    updateFieldIfNotNull(
-      "Accelerometer_gy",
-      event.accelerationIncludingGravity.y
-    );
-    updateFieldIfNotNull(
-      "Accelerometer_gz",
-      event.accelerationIncludingGravity.z
-    );
-
-    updateFieldIfNotNull("Accelerometer_x", event.acceleration.x);
-    updateFieldIfNotNull("Accelerometer_y", event.acceleration.y);
-    updateFieldIfNotNull("Accelerometer_z", event.acceleration.z);
-
-    updateFieldIfNotNull("Accelerometer_i", event.interval, 2);
-
-    updateFieldIfNotNull("Gyroscope_z", event.rotationRate.alpha);
-    updateFieldIfNotNull("Gyroscope_x", event.rotationRate.beta);
-    updateFieldIfNotNull("Gyroscope_y", event.rotationRate.gamma);
-    incrementEventCount();
   }
 
   let is_running = false;
@@ -124,7 +92,17 @@ function CreateNewProject(props) {
   const directionOppositeName = todos.getDirectionName(angleOposite);
   const directionOppositePhongThuyName =
     todos.getDirectionPhongThuyName(angleOposite);
-  React.useEffect(() => {}, []);
+  React.useEffect(() => {
+    if (
+      DeviceMotionEvent &&
+      typeof DeviceMotionEvent.requestPermission === "function"
+    ) {
+      DeviceMotionEvent.requestPermission();
+    }
+    window.addEventListener("deviceorientation", handleOrientation);
+  }, []);
+  window.addEventListener("deviceorientation", handleOrientation);
+
   // console.log(labanObj.Accelerometer_z, "labanObj.Accelerometer_z");
   return (
     <>
