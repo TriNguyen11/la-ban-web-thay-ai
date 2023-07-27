@@ -107,7 +107,7 @@ function CreateNewProject(props) {
       var heading = 360 - alpha; //heading [0, 360)
       document.getElementById("heading").innerHTML = heading.toFixed([0]);
       setAngle(
-        (heading - 230 < 0 ? heading + 360 - 230 : heading - 230).toFixed([0])
+        (heading - 215 < 0 ? heading + 360 - 215 : heading - 215).toFixed([0])
       );
     }
   }
