@@ -52,7 +52,7 @@ function CreateNewProject(props) {
     let angle;
     // let { x, y, z } = magnetometer;
     // if (Math.atan2(magnetometer.y, magnetometer.x) >= 0) {
-    if (event.beta !== 0 || event.gamma !== 0) {
+    if (event.gamma) {
       // angle = Math.atan2(magnetometer.y, magnetometer.x) * (180 / Math.PI);
       a1 = -Math.cos(event.alpha) * Math.sin(event.gamma);
       a2 = Math.sin(event.alpha) * Math.sin(event.beta) * Math.cos(event.gamma);
