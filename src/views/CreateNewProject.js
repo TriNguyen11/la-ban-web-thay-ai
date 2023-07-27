@@ -44,9 +44,27 @@ function CreateNewProject(props) {
       ["x"]: event.beta.toFixed(10),
       ["y"]: event.gamma.toFixed(10),
     });
-    let tmp =
-      // 90 -
-      todos.caculateAngle({ x: event.beta, y: event.gamma, z: event.alpha });
+    let tmp;
+    // let tmp =
+    // 90 -
+    // todos.caculateAngle({ x: event.beta, y: event.gamma, z: event.alpha });
+    var a1, a2, b1, b2;
+    let angle;
+    // let { x, y, z } = magnetometer;
+    // if (Math.atan2(magnetometer.y, magnetometer.x) >= 0) {
+    if (event.beta !== 0 || event.gamma !== 0) {
+      // angle = Math.atan2(magnetometer.y, magnetometer.x) * (180 / Math.PI);
+      a1 = -Math.cos(event.alpha) * Math.sin(event.gamma);
+      a2 = Math.sin(event.alpha) * Math.sin(event.beta) * Math.cos(event.gamma);
+      b1 = -Math.sin(event.alpha) * Math.sin(event.gamma);
+      b2 = Math.cos(event.alpha) * Math.sin(event.beta) * Math.cos(event.gamma);
+      tmp = Math.atan((a1 - a2) / (b1 + b2)).toDeg();
+    } else {
+      // angle =
+      //   (Math.atan2(magnetometer.y, magnetometer.x) + 2 * Math.PI) *
+      //   (180 / Math.PI);
+      tmp = 0;
+    }
     if (tmp < 0) {
       tmp = 360 + tmp;
     }
