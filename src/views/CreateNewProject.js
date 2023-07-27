@@ -34,7 +34,7 @@ function CreateNewProject(props) {
       accelerometer.unsubscribe();
     }
   };
-  function compassHeading(alpha, beta, gamma) {
+  async function compassHeading(alpha, beta, gamma) {
     // Convert degrees to radians
     var alphaRad = alpha * (Math.PI / 180);
     var betaRad = beta * (Math.PI / 180);
@@ -79,16 +79,20 @@ function CreateNewProject(props) {
       ["x"]: event.beta.toFixed(10),
       ["y"]: event.gamma.toFixed(10),
     });
-    let tmp = compassHeading(event.alpha, event.beta, event.gamma);
+    let tmp = 90 - (await compassHeading(event.alpha, event.beta, event.gamma));
     var a1, a2, b1, b2;
     let angle;
     // let { x, y, z } = magnetometer;
-    // if (tmp < 0) {
-    //   tmp = 360 + tmp;
-    // }
+    if (tmp < 0) {
+      tmp = 360 + tmp;
+    }
     setExample(tmp);
     document.getElementById("example").innerHTML = tmp.toString();
-    // setAngle(Math.round((360 - tmp) * 10) / 10);
+    document.getElementById("angle").innerHTML = (
+      Math.round((360 - tmp) * 10) / 10
+    ).toString();
+
+    setAngle(Math.round((360 - tmp) * 10) / 10);
   }
 
   async function updateFieldIfNotNull(fieldName, value, precision = 10) {
