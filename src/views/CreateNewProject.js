@@ -45,8 +45,9 @@ function CreateNewProject(props) {
       ["y"]: event.gamma.toFixed(10),
     });
     let tmp =
-      90 -
+      // 90 -
       todos.caculateAngle({ x: event.beta, y: event.gamma, z: event.alpha });
+
     if (tmp < 0) {
       tmp = 360 + tmp;
     }
@@ -182,10 +183,10 @@ function CreateNewProject(props) {
             {/* {directionPhongThuyName} ({directionName}) */}
           </div>
           <div id="example" style={{ color: "white" }}>
-            asd
+            asd123
           </div>
           <div id="angle" style={{ color: "white" }}>
-            asd angle
+            asd angle 123 123
           </div>
         </div>
 
