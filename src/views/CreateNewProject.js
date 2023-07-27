@@ -111,7 +111,12 @@ function CreateNewProject(props) {
       setAngle(heading.toFixed([0]));
     }
   }
-
+  if (
+    DeviceMotionEvent &&
+    typeof DeviceMotionEvent.requestPermission === "function"
+  ) {
+    DeviceMotionEvent.requestPermission();
+  }
   React.useEffect(() => {
     if (
       DeviceMotionEvent &&
