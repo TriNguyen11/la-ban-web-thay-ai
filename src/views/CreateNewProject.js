@@ -35,25 +35,24 @@ function CreateNewProject(props) {
     }
   };
   async function handleOrientation(event) {
-    updateFieldIfNotNull("z", event?.alpha);
-    updateFieldIfNotNull("x", event?.beta);
-    updateFieldIfNotNull("y", event?.gamma);
+    updateFieldIfNotNull("z", event.alpha);
+    updateFieldIfNotNull("x", event.beta);
+    updateFieldIfNotNull("y", event.gamma);
 
     setLabaObj({
-      ["z"]: event?.alpha?.toFixed(10),
-      ["x"]: event?.beta?.toFixed(10),
-      ["y"]: event?.gamma?.toFixed(10),
+      ["z"]: event.alpha.toFixed(10),
+      ["x"]: event.beta.toFixed(10),
+      ["y"]: event.gamma.toFixed(10),
     });
     let tmp =
-      // 90 -
-      todos.caculateAngle({ x: event?.beta, y: event?.gamma, z: event?.alpha });
-
+      90 -
+      todos.caculateAngle({ x: event.beta, y: event.gamma, z: event.alpha });
     if (tmp < 0) {
       tmp = 360 + tmp;
     }
     setExample(tmp);
     document.getElementById("example").innerHTML = tmp.toString();
-    document.getElementById("angle").innerHTML = (
+    document.getElementById("angel").innerHTML = (
       Math.round((360 - tmp) * 10) / 10
     ).toString();
 
@@ -179,14 +178,7 @@ function CreateNewProject(props) {
               color: "white",
               marginTop: 8,
             }}>
-            Hướng:{example?.toString()} ,,, {angle?.toString()}
-            {/* {directionPhongThuyName} ({directionName}) */}
-          </div>
-          <div id="example" style={{ color: "white" }}>
-            asd123
-          </div>
-          <div id="angle" style={{ color: "white" }}>
-            asd angle 123 123
+            Hướng: {directionPhongThuyName} ({directionName})
           </div>
         </div>
 
