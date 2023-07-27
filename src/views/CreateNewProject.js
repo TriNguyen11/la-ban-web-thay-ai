@@ -114,11 +114,11 @@ function CreateNewProject(props) {
     // Green for North and South, black otherwise
     if (heading > 359 || heading < 1) {
       //Allow +- 1 degree
-      document.body.style.backgroundColor = "green";
+      // document.body.style.backgroundColor = "green";
       document.getElementById("heading").innerHTML = "N"; // North
     } else if (heading > 179 && heading < 181) {
       //Allow +- 1 degree
-      document.body.style.backgroundColor = "green";
+      // document.body.style.backgroundColor = "green";
       document.getElementById("heading").innerHTML = "S"; // South
     } else {
       // Otherwise, use near black
@@ -221,7 +221,7 @@ function CreateNewProject(props) {
             }}>
             Hướng: {angle}
             {/* {directionPhongThuyName} ({directionName}) */}
-            <p id="heading" style="text-align:center"></p>
+            <p id="heading"></p>
           </div>
         </div>
 
