@@ -45,7 +45,7 @@ function CreateNewProject(props) {
       ["y"]: event.gamma.toFixed(10),
     });
     let tmp =
-      90 -
+      60 -
       todos.caculateAngle({ x: event.beta, y: event.gamma, z: event.alpha });
     if (tmp < 0) {
       tmp = 360 + tmp;
