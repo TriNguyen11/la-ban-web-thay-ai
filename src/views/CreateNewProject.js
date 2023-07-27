@@ -104,34 +104,15 @@ function CreateNewProject(props) {
       document.getElementById("heading").innerHTML = heading.toFixed([0]);
       setAngle(heading.toFixed([0]));
     } else {
-      var heading = 360 - alpha; //heading [0, 360)
+      alert(
+        "Your device is reporting relative alpha values, so this compass won't point north :("
+      );
+      var heading = 300 - alpha; //heading [0, 360)
       document.getElementById("heading").innerHTML = heading.toFixed([0]);
       setAngle(heading.toFixed([0]));
     }
-
-    // Change backgroud colour based on heading
-    // Green for North and South, black otherwise
-    if (heading > 359 || heading < 1) {
-      //Allow +- 1 degree
-      // document.body.style.backgroundColor = "green";
-      document.getElementById("heading").innerHTML = "N"; // North
-    } else if (heading > 179 && heading < 181) {
-      //Allow +- 1 degree
-      // document.body.style.backgroundColor = "green";
-      document.getElementById("heading").innerHTML = "S"; // South
-    } else {
-      // Otherwise, use near black
-      document.body.style.backgroundColor = "#161616";
-    }
   }
 
-  // Check if device can provide absolute orientation data
-  if (window.DeviceOrientationEvent) {
-    window.addEventListener("deviceorientation", deviceOrientationListener);
-  } // Send an alert if the device isn't compatible
-  else {
-    alert("Sorry, try again on a compatible mobile device!");
-  }
   React.useEffect(() => {
     if (
       DeviceMotionEvent &&
