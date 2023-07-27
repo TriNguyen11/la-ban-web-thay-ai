@@ -58,7 +58,7 @@ function CreateNewProject(props) {
       a2 = Math.sin(event.alpha) * Math.sin(event.beta) * Math.cos(event.gamma);
       b1 = -Math.sin(event.alpha) * Math.sin(event.gamma);
       b2 = Math.cos(event.alpha) * Math.sin(event.beta) * Math.cos(event.gamma);
-      tmp = Math.atan((a1 - a2) / (b1 + b2)).toDeg();
+      tmp = (Math.atan((a1 - a2) / (b1 + b2)) * 180) / Math.PI;
     } else {
       // angle =
       //   (Math.atan2(magnetometer.y, magnetometer.x) + 2 * Math.PI) *
