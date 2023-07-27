@@ -45,7 +45,7 @@ function CreateNewProject(props) {
       ["y"]: event.gamma.toFixed(10),
     });
     let tmp =
-      60 -
+      90 -
       todos.caculateAngle({ x: event.beta, y: event.gamma, z: event.alpha });
     if (tmp < 0) {
       tmp = 360 + tmp;
@@ -231,7 +231,7 @@ function CreateNewProject(props) {
           }}
         />
       </div>
-      <div style={{}} className="d-flex flex-row justify-content-center">
+      {/* <div style={{}} className="d-flex flex-row justify-content-center">
         <Image
           src={"/la-ban/24-son-huong.png"}
           // src={"../assets/la-ban/60-hoa-giap.png"}
@@ -241,7 +241,7 @@ function CreateNewProject(props) {
             rotate: `${labanObj ? labanObj?.z : 0}deg`,
           }}
         />
-      </div>
+      </div> */}
       {/* bottom */}
       <div
         className="d-flex flex-row justify-content-between align-items-end"
