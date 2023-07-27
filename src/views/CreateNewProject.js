@@ -252,7 +252,8 @@ function CreateNewProject(props) {
         {/* middle */}
         <div className="d-flex flex-column align-items-center">
           <div style={{ textTransform: "uppercase", color: "white" }}>
-            Toa: {directionOppositePhongThuyName} ({directionOppositeName})
+            Toa: {directionOppositePhongThuyName} ({directionOppositeName}) Toa:{" "}
+            {directionOppositePhongThuyName} ({directionOppositeName})
           </div>
           <div className="d-flex flex-row align-items-center">
             <div
