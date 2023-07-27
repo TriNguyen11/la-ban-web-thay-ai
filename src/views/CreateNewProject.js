@@ -34,6 +34,40 @@ function CreateNewProject(props) {
       accelerometer.unsubscribe();
     }
   };
+  function compassHeading(alpha, beta, gamma) {
+    // Convert degrees to radians
+    var alphaRad = alpha * (Math.PI / 180);
+    var betaRad = beta * (Math.PI / 180);
+    var gammaRad = gamma * (Math.PI / 180);
+
+    // Calculate equation components
+    var cA = Math.cos(alphaRad);
+    var sA = Math.sin(alphaRad);
+    var cB = Math.cos(betaRad);
+    var sB = Math.sin(betaRad);
+    var cG = Math.cos(gammaRad);
+    var sG = Math.sin(gammaRad);
+
+    // Calculate A, B, C rotation components
+    var rA = -cA * sG - sA * sB * cG;
+    var rB = -sA * sG + cA * sB * cG;
+    var rC = -cB * cG;
+
+    // Calculate compass heading
+    var compassHeading = Math.atan(rA / rB);
+
+    // Convert from half unit circle to whole unit circle
+    if (rB < 0) {
+      compassHeading += Math.PI;
+    } else if (rA < 0) {
+      compassHeading += 2 * Math.PI;
+    }
+
+    // Convert radians to degrees
+    compassHeading *= 180 / Math.PI;
+
+    return compassHeading;
+  }
   async function compassHeading(alpha, beta, gamma) {
     // Convert degrees to radians
     var alphaRad = alpha * (Math.PI / 180);
@@ -68,7 +102,6 @@ function CreateNewProject(props) {
 
     return compassHeading;
   }
-
   async function handleOrientation(event) {
     updateFieldIfNotNull("z", event.alpha);
     updateFieldIfNotNull("x", event.beta);
@@ -79,14 +112,10 @@ function CreateNewProject(props) {
       ["x"]: event.beta.toFixed(10),
       ["y"]: event.gamma.toFixed(10),
     });
-    // let tmp = 90 -
-    let tmp = await compassHeading(
-      event.alpha.toFixed(10),
-      event.beta.toFixed(10),
-      event.gamma.toFixed(10)
-    );
-    document.getElementById("example").innerHTML = tmp.toString();
 
+    let tmp =
+      90 -
+      todos.caculateAngle({ x: event.beta, y: event.gamma, z: event.alpha });
     var a1, a2, b1, b2;
     let angle;
     // let { x, y, z } = magnetometer;
@@ -94,10 +123,10 @@ function CreateNewProject(props) {
       tmp = 360 + tmp;
     }
     setExample(tmp);
-    // document.getElementById("example").innerHTML = tmp.toString();
-    // document.getElementById("angle").innerHTML = (
-    //   Math.round((360 - tmp) * 10) / 10
-    // ).toString();
+    document.getElementById("example").innerHTML = tmp.toString();
+    document.getElementById("angle").innerHTML = (
+      Math.round((360 - tmp) * 10) / 10
+    ).toString();
 
     setAngle(Math.round((360 - tmp) * 10) / 10);
   }

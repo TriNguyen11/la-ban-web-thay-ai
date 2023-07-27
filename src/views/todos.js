@@ -29,35 +29,20 @@ export default {
     return [{ name: "Mặc định", image: "/lap-cuc/mac-dinh.png" }];
   },
   caculateAngle: (magnetometer) => {
-    var a1, a2, b1, b2;
     let angle;
     if (magnetometer) {
       // let { x, y, z } = magnetometer;
-      // if (Math.atan2(magnetometer.y, magnetometer.x) >= 0) {
-      if (magnetometer.x !== 0 || magnetometer.y !== 0) {
-        // angle = Math.atan2(magnetometer.y, magnetometer.x) * (180 / Math.PI);
-        a1 = -Math.cos(magnetometer.z) * Math.sin(magnetometer.y);
-        a2 =
-          Math.sin(magnetometer.z) *
-          Math.sin(magnetometer.x) *
-          Math.cos(magnetometer.y);
-        b1 = -Math.sin(magnetometer.z) * Math.sin(magnetometer.y);
-        b2 =
-          Math.cos(magnetometer.z) *
-          Math.sin(magnetometer.x) *
-          Math.cos(magnetometer.y);
-        return Math.atan((a1 - a2) / (b1 + b2)).toDeg();
+      if (Math.atan2(magnetometer.y, magnetometer.x) >= 0) {
+        angle = Math.atan2(magnetometer.y, magnetometer.x) * (180 / Math.PI);
       } else {
-        // angle =
-        //   (Math.atan2(magnetometer.y, magnetometer.x) + 2 * Math.PI) *
-        //   (180 / Math.PI);
-        return 0;
+        angle =
+          (Math.atan2(magnetometer.y, magnetometer.x) + 2 * Math.PI) *
+          (180 / Math.PI);
       }
     }
-    // const re = Math.round(angle * 10) / 10;
+    const re = Math.round(angle * 10) / 10;
     // console.log(re)
-    // return re;
-    return angle;
+    return re;
   },
   getDirectionName: (angle = 0) => {
     let directionName = "Bắc";
