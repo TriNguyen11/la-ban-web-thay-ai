@@ -104,9 +104,10 @@ function CreateNewProject(props) {
       document.getElementById("heading").innerHTML = heading.toFixed([0]);
       setAngle(heading.toFixed([0]));
     } else {
-      alpha += 150;
       var heading = 360 - alpha; //heading [0, 360)
-      document.getElementById("heading").innerHTML = heading.toFixed([0]);
+      document.getElementById("heading").innerHTML = (heading + 150).toFixed([
+        0,
+      ]);
       setAngle(heading.toFixed([0]));
     }
   }
