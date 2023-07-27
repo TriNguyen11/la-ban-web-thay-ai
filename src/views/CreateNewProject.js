@@ -108,6 +108,7 @@ function CreateNewProject(props) {
       );
       var heading = 360 - alpha; //heading [0, 360)
       document.getElementById("heading").innerHTML = heading.toFixed([0]);
+      setAngle(heading.toFixed([0]));
     }
 
     // Change backgroud colour based on heading
