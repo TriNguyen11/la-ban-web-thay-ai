@@ -26,10 +26,19 @@ function CreateNewProject(props) {
   // let _angle = useSharedValue(0);
   // _angle.addListener(({value}) => setAngle(Math.round(value)));
 
+  const unsubscribe = () => {
+    if (magnetometer) {
+      magnetometer.unsubscribe();
+    }
+    if (accelerometer) {
+      accelerometer.unsubscribe();
+    }
+  };
   async function handleOrientation(event) {
     updateFieldIfNotNull("z", event.alpha);
     updateFieldIfNotNull("x", event.beta);
     updateFieldIfNotNull("y", event.gamma);
+
     setLabaObj({
       ["z"]: event.alpha?.toFixed(10),
       ["x"]: event.beta?.toFixed(10),
@@ -85,15 +94,15 @@ function CreateNewProject(props) {
   let is_running = false;
   let demo_button = document.getElementById("start_demo");
 
-  // React.useEffect(() => {
-  //   const cpss = todos.getCompasses();
-  //   console.log(cpss, "cpss");
-  //   setLaban(cpss[0]);
-  //   window.addEventListener("focus", () => {});
-  //   window.addEventListener("blur", () => {
-  //     unsubscribe();
-  //   });
-  // }, []);
+  React.useEffect(() => {
+    const cpss = todos.getCompasses();
+    console.log(cpss, "cpss");
+    setLaban(cpss[0]);
+    window.addEventListener("focus", () => {});
+    window.addEventListener("blur", () => {
+      unsubscribe();
+    });
+  }, []);
 
   // const animatedStyles = useAnimatedStyle(() => {
   //   return {
@@ -109,19 +118,8 @@ function CreateNewProject(props) {
   const directionOppositeName = todos.getDirectionName(angleOposite);
   const directionOppositePhongThuyName =
     todos.getDirectionPhongThuyName(angleOposite);
-  if (
-    DeviceMotionEvent &&
-    typeof DeviceMotionEvent.requestPermission === "function"
-  ) {
-    DeviceMotionEvent.requestPermission();
-  }
-  // window.addEventListener("devicemotion", handleMotion);
-  window.addEventListener("deviceorientation", handleOrientation);
-
   React.useEffect(() => {
     // Request permission for iOS 13+ devices
-    // demo_button.classList.remove("btn-success");
-    // demo_button.classList.add("btn-danger");
     if (
       DeviceMotionEvent &&
       typeof DeviceMotionEvent.requestPermission === "function"
@@ -130,8 +128,10 @@ function CreateNewProject(props) {
     }
     // window.addEventListener("devicemotion", handleMotion);
     window.addEventListener("deviceorientation", handleOrientation);
+    // demo_button.classList.remove("btn-success");
+    // demo_button.classList.add("btn-danger");
   }, []);
-
+  // console.log(labanObj.Accelerometer_z, "labanObj.Accelerometer_z");
   return (
     <>
       <Image
@@ -251,20 +251,9 @@ function CreateNewProject(props) {
           src={"/la-ban/24-son-huong.png"}
           // src={"../assets/la-ban/60-hoa-giap.png"}
           style={{
-            width: "50%",
+            width: "80%",
             height: "20%",
             rotate: `${angle ? angle : 0}deg`,
-          }}
-        />
-      </div>
-      <div style={{}} className="d-flex flex-row justify-content-center">
-        <Image
-          src={"/la-ban/24-son-huong.png"}
-          // src={"../assets/la-ban/60-hoa-giap.png"}
-          style={{
-            width: "50%",
-            height: "20%",
-            rotate: `${labanObj ? labanObj.z : 0}deg`,
           }}
         />
       </div>
@@ -280,9 +269,7 @@ function CreateNewProject(props) {
         {/* middle */}
         <div className="d-flex flex-column align-items-center">
           <div style={{ textTransform: "uppercase", color: "white" }}>
-            {/* Toa: {directionOppositePhongThuyName} ({directionOppositeName}) */}
-            {labanObj && JSON.stringify(labanObj)}
-            {angle && JSON.stringify(angle)}
+            Toa: {directionOppositePhongThuyName} ({directionOppositeName})
           </div>
           <div className="d-flex flex-row align-items-center">
             <div
