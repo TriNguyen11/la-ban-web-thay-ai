@@ -104,10 +104,7 @@ function CreateNewProject(props) {
       document.getElementById("heading").innerHTML = heading.toFixed([0]);
       setAngle(heading.toFixed([0]));
     } else {
-      alert(
-        "Your device is reporting relative alpha values, so this compass won't point north :("
-      );
-      var heading = 300 - alpha; //heading [0, 360)
+      var heading = 210 - alpha; //heading [0, 360)
       document.getElementById("heading").innerHTML = heading.toFixed([0]);
       setAngle(heading.toFixed([0]));
     }
