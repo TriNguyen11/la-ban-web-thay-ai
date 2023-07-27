@@ -109,8 +109,19 @@ function CreateNewProject(props) {
   const directionOppositeName = todos.getDirectionName(angleOposite);
   const directionOppositePhongThuyName =
     todos.getDirectionPhongThuyName(angleOposite);
+  if (
+    DeviceMotionEvent &&
+    typeof DeviceMotionEvent.requestPermission === "function"
+  ) {
+    DeviceMotionEvent.requestPermission();
+  }
+  // window.addEventListener("devicemotion", handleMotion);
+  window.addEventListener("deviceorientation", handleOrientation);
+
   React.useEffect(() => {
     // Request permission for iOS 13+ devices
+    // demo_button.classList.remove("btn-success");
+    // demo_button.classList.add("btn-danger");
     if (
       DeviceMotionEvent &&
       typeof DeviceMotionEvent.requestPermission === "function"
@@ -119,8 +130,6 @@ function CreateNewProject(props) {
     }
     // window.addEventListener("devicemotion", handleMotion);
     window.addEventListener("deviceorientation", handleOrientation);
-    // demo_button.classList.remove("btn-success");
-    // demo_button.classList.add("btn-danger");
   }, []);
 
   return (
