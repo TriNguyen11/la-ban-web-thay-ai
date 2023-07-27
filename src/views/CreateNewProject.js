@@ -1,5 +1,5 @@
 import React from "react";
-import { Button, Image } from "react-bootstrap";
+import { Image } from "react-bootstrap";
 
 import todos from "./todos";
 
@@ -236,7 +236,7 @@ function CreateNewProject(props) {
           style={{
             width: "50%",
             height: "20%",
-            rotate: `${labanObj ? labanObj?.z : 0}deg`,
+            rotate: `${labanObj ? labanObj.z : 0}deg`,
           }}
         />
       </div>
@@ -252,8 +252,7 @@ function CreateNewProject(props) {
         {/* middle */}
         <div className="d-flex flex-column align-items-center">
           <div style={{ textTransform: "uppercase", color: "white" }}>
-            Toa: {directionOppositePhongThuyName} ({directionOppositeName}) Toa:{" "}
-            {directionOppositePhongThuyName} ({directionOppositeName})
+            Toa: {directionOppositePhongThuyName} ({directionOppositeName})
           </div>
           <div className="d-flex flex-row align-items-center">
             <div
