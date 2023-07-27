@@ -102,6 +102,7 @@ function CreateNewProject(props) {
       alpha = event.webkitCompassHeading; //iOS non-standard
       var heading = alpha;
       document.getElementById("heading").innerHTML = heading.toFixed([0]);
+      setAngle(heading.toFixed([0]));
     } else {
       alert(
         "Your device is reporting relative alpha values, so this compass won't point north :("
