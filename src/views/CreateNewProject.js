@@ -242,9 +242,20 @@ function CreateNewProject(props) {
           src={"/la-ban/24-son-huong.png"}
           // src={"../assets/la-ban/60-hoa-giap.png"}
           style={{
-            width: "80%",
+            width: "50%",
             height: "20%",
             rotate: `${angle ? angle : 0}deg`,
+          }}
+        />
+      </div>
+      <div style={{}} className="d-flex flex-row justify-content-center">
+        <Image
+          src={"/la-ban/24-son-huong.png"}
+          // src={"../assets/la-ban/60-hoa-giap.png"}
+          style={{
+            width: "50%",
+            height: "20%",
+            rotate: `${labanObj ? labanObj.z : 0}deg`,
           }}
         />
       </div>
