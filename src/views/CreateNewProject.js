@@ -61,6 +61,7 @@ function CreateNewProject(props) {
     var gamma = event.gamma; //y axis rotation [-90, 90]
     //Check if absolute values have been sent
     if (!lock) {
+      document.getElementById("console").innerText = "lock == false";
       if (typeof event.webkitCompassHeading !== "undefined") {
         alpha = event.webkitCompassHeading; //iOS non-standard
         var heading = alpha;
@@ -72,6 +73,7 @@ function CreateNewProject(props) {
         );
       }
     }
+    document.getElementById("console").innerText = "lock == true";
   }
 
   React.useEffect(() => {
@@ -81,13 +83,11 @@ function CreateNewProject(props) {
       //   deviceOrientationListener
       // );
       areaListener.abort();
-      document.getElementById("console").innerText = "lock == true";
     } else {
       window.addEventListener(`deviceorientation`, deviceOrientationListener, {
         signal: areaListener.signal,
       });
       // window.addEventListener("deviceorientation", deviceOrientationListener);
-      document.getElementById("console").innerText = "lock == false";
     }
   }, [lock]);
   console.log(visibleSonHuongPicker, "asd");
