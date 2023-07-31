@@ -78,17 +78,17 @@ function CreateNewProject(props) {
       unsubscribe();
     });
   }, []);
-  const handlePermission = () => {
-    if (
-      DeviceMotionEvent &&
-      typeof DeviceMotionEvent.requestPermission === "function"
-    ) {
-      DeviceMotionEvent.requestPermission();
-    }
-  };
-  setTimeout(() => {
-    handlePermission();
-  }, 3000);
+  // const handlePermission = () => {
+  //   if (
+  //     DeviceMotionEvent &&
+  //     typeof DeviceMotionEvent.requestPermission === "function"
+  //   ) {
+  //     DeviceMotionEvent.requestPermission();
+  //   }
+  // };
+  // setTimeout(() => {
+  //   handlePermission();
+  // }, 3000);
   // const animatedStyles = useAnimatedStyle(() => {
   //   return {
   //     transform: [{ rotate: `${_angle.value}deg` }],
