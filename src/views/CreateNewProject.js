@@ -35,36 +35,6 @@ function CreateNewProject(props) {
       accelerometer.unsubscribe();
     }
   };
-  async function handleOrientation(event) {
-    updateFieldIfNotNull("z", event.alpha);
-    updateFieldIfNotNull("x", event.beta);
-    updateFieldIfNotNull("y", event.gamma);
-
-    setLabaObj({
-      ["z"]: event.alpha.toFixed(10),
-      ["x"]: event.beta.toFixed(10),
-      ["y"]: event.gamma.toFixed(10),
-    });
-    let tmp =
-      90 -
-      todos.caculateAngle({ x: event.beta, y: event.gamma, z: event.alpha });
-    if (tmp < 0) {
-      tmp = 360 + tmp;
-    }
-    setExample(tmp);
-    // document.getElementById("example").innerHTML = tmp.toString();
-    // document.getElementById("angel").innerHTML = (
-    //   Math.round((360 - tmp) * 10) / 10
-    // ).toString();
-
-    setAngle(Math.round((360 - tmp) * 10) / 10);
-  }
-
-  async function updateFieldIfNotNull(fieldName, value, precision = 10) {
-    if (value != null) {
-      document.getElementById(fieldName).innerHTML = value.toFixed(precision);
-    }
-  }
 
   let is_running = false;
   let demo_button = document.getElementById("start_demo");
@@ -97,10 +67,6 @@ function CreateNewProject(props) {
   // console.log(labanDimensions)
   const directionName = todos.getDirectionName(angle);
   const directionPhongThuyName = todos.getDirectionPhongThuyName(angle);
-  const angleOposite = angle >= 180 ? angle - 180 : 180 + angle;
-  const directionOppositeName = todos.getDirectionName(angleOposite);
-  const directionOppositePhongThuyName =
-    todos.getDirectionPhongThuyName(angleOposite);
 
   function deviceOrientationListener(event) {
     var alpha = event.alpha; //z axis rotation [0,360)
@@ -118,14 +84,6 @@ function CreateNewProject(props) {
       );
     }
   }
-  setTimeout(() => {
-    if (
-      DeviceMotionEvent &&
-      typeof DeviceMotionEvent.requestPermission === "function"
-    ) {
-      DeviceMotionEvent.requestPermission();
-    }
-  }, 5000);
 
   React.useEffect(() => {
     if (
@@ -267,8 +225,8 @@ function CreateNewProject(props) {
           src={"/la-ban/24-son-huong.png"}
           // src={"../assets/la-ban/60-hoa-giap.png"}
           style={{
-            width: "50%",
-            height: "20%",
+            width: "90%",
+            height: "40%",
             rotate: `${angle ? 360 - angle : 0}deg`,
           }}
         />
@@ -296,8 +254,13 @@ function CreateNewProject(props) {
         {/* middle */}
         <div className="d-flex flex-column align-items-center">
           <div style={{ textTransform: "uppercase", color: "white" }}>
-            Toa: {directionOppositePhongThuyName} ({directionOppositeName})
+            Toa:{" "}
+            {todos.getDirectionPhongThuyName(
+              angle >= 180 ? angle - 180 : 180 + angle
+            )}{" "}
+            ({todos.getDirectionName(angle >= 180 ? angle - 180 : 180 + angle)})
           </div>
+
           <div className="d-flex flex-row align-items-center">
             <div
               style={{
@@ -307,35 +270,8 @@ function CreateNewProject(props) {
                 padding: "2px 10px",
                 marginRight: 8,
               }}>
-              {Math.abs(angleOposite)}
+              {Math.abs(angle >= 180 ? angle - 180 : 180 + angle)}
               <span>&deg;</span>
-              <i
-                className=" fa fa-pen-alt "
-                style={{
-                  cursor: "pointer",
-                  fontSize: 12,
-                }}>
-                {" "}
-              </i>
-            </div>
-            <div className="position-relative" style={{}}>
-              <Image
-                src={"/la-ban/24-son-huong.png"}
-                // src={"../assets/la-ban/60-hoa-giap.png"}
-                style={{
-                  width: 30,
-                  height: 30,
-                  rotate: `${angle ? angle : 0}deg`,
-                }}
-              />
-              <i
-                className=" fa fa-lock  position-absolute "
-                style={{
-                  cursor: "pointer",
-                  fontSize: 12,
-                  right: 10,
-                  top: 8,
-                }}></i>
             </div>
           </div>
         </div>
@@ -416,146 +352,6 @@ function CreateNewProject(props) {
           );
         })}
       </div>
-      {/* <main role="main" className="container">
-      <div className="p-3 mb-2 bg-secondary" id="demo-div">
-        <a
-          id="start_demo"
-          className="btn btn-lg btn-success py-1"
-          href="#"
-          role="button"
-          style={{}}
-          onClick={(e) => {
-            e.preventDefault();
-
-            // Request permission for iOS 13+ devices
-            if (
-              DeviceMotionEvent &&
-              typeof DeviceMotionEvent.requestPermission === "function"
-            ) {
-              DeviceMotionEvent.requestPermission();
-            }
-
-            if (is_running) {
-              window.removeEventListener("devicemotion", handleMotion);
-              window.removeEventListener(
-                "deviceorientation",
-                handleOrientation
-              );
-              demo_button.innerHTML = "Start demo";
-              demo_button.classList.add("btn-success");
-              demo_button.classList.remove("btn-danger");
-              is_running = false;
-            } else {
-              window.addEventListener("devicemotion", handleMotion);
-              window.addEventListener("deviceorientation", handleOrientation);
-              document.getElementById("start_demo").innerHTML = "Stop demo";
-              demo_button.classList.remove("btn-success");
-              demo_button.classList.add("btn-danger");
-              is_running = true;
-            }
-          }}>
-          Start the demo
-        </a>
-        <p>
-          Num. of datapoints:{" "}
-          <span className="badge badge-warning" id="num-observed-events">
-            0
-          </span>
-        </p>
-
-        <h4>Orientation</h4>
-        <ul>
-          <li>
-            X-axis (&beta;): <span id="x">0</span>
-            <span>&deg;</span>
-          </li>
-          <li>
-            Y-axis (&gamma;): <span id="y">0</span>
-            <span>&deg;</span>
-          </li>
-          <li>
-            ASD-axis (&alpha;): <span id="z">0</span>
-            <span>&deg;</span>
-          </li>
-        </ul>
-
-        <h4>Accelerometer</h4>
-        <ul>
-          <li>
-            X-axis: <span id="Accelerometer_x">0</span>
-            <span>
-              {" "}
-              m/s<sup>2</sup>
-            </span>
-          </li>
-          <li>
-            Y-axis: <span id="Accelerometer_y">0</span>
-            <span>
-              {" "}
-              m/s<sup>2</sup>
-            </span>
-          </li>
-          <li>
-            Z-axis: <span id="Accelerometer_z">0</span>
-            <span>
-              {" "}
-              m/s<sup>2</sup>
-            </span>
-          </li>
-          <li>
-            Data Interval: <span id="Accelerometer_i">0</span>
-            <span> ms</span>
-          </li>
-        </ul>
-
-        <h4>Accelerometer including gravity</h4>
-
-        <ul>
-          <li>
-            X-axis: <span id="Accelerometer_gx">0</span>
-            <span>
-              {" "}
-              m/s<sup>2</sup>
-            </span>
-          </li>
-          <li>
-            Y-axis: <span id="Accelerometer_gy">0</span>
-            <span>
-              {" "}
-              m/s<sup>2</sup>
-            </span>
-          </li>
-          <li>
-            Z-axis: <span id="Accelerometer_gz">0</span>
-            <span>
-              {" "}
-              m/s<sup>2</sup>
-            </span>
-          </li>
-        </ul>
-
-        <h4>Gyroscope</h4>
-        <ul>
-          <li>
-            X-axis: <span id="Gyroscope_x">0</span>
-            <span>&deg;/s</span>
-          </li>
-          <li>
-            Y-axis: <span id="Gyroscope_y">0</span>
-            <span>&deg;/s</span>
-          </li>
-          <li>
-            Z-axis: <span id="Gyroscope_z">0</span>
-            <span>&deg;/s</span>
-          </li>
-        </ul>
-      </div>
-      <div>{JSON.stringify(labanObj)}</div>
-      <div id="example">example: {example && JSON.stringify(example)}</div>
-      <div id="angel">angelhtml :</div>
-      <div> angel: {angle && JSON.stringify(angle)}</div>
-      <div>{labanObj ? labanObj?.z : 0}deg</div>
-    </main> */}
     </>
   );
 }
