@@ -1,5 +1,5 @@
 import React from "react";
-import { Button, Image } from "react-bootstrap";
+import { Button, Col, Container, Image, Modal, Row } from "react-bootstrap";
 
 import todos from "./todos";
 
@@ -19,7 +19,7 @@ function CreateNewProject(props) {
   const [text, setText] = React.useState([]);
   const [angle, setAngle] = React.useState(0);
   // const [docanbang,setDoCanBang] = React.useState({x: 0,y:0,z:0})
-  const [laban, setLaban] = React.useState(null);
+  const [compassPicker, setCompassPicker] = React.useState([]);
   const [labanObj, setLabaObj] = React.useState({});
   // const labanMaTrix = useValue(Skia.Matrix());
 
@@ -38,14 +38,14 @@ function CreateNewProject(props) {
 
   React.useEffect(() => {
     const cpss = todos.getCompasses();
-    console.log(cpss, "cpss");
-    setLaban(cpss[0]);
+    const sonhuongs = todos.getDoSonHuongs();
+    setCompassPicker(sonhuongs);
     window.addEventListener("focus", () => {});
     window.addEventListener("blur", () => {
       unsubscribe();
     });
   }, []);
-
+  console.log(compassPicker);
   setInterval(() => {
     if (
       DeviceMotionEvent &&
@@ -92,7 +92,7 @@ function CreateNewProject(props) {
     // DeviceMotionEvent.requestPermission();
     window.addEventListener("deviceorientation", deviceOrientationListener);
   }, []);
-
+  console.log(visibleSonHuongPicker, "asd");
   // console.log(labanObj.Accelerometer_z, "labanObj.Accelerometer_z");
   return (
     <>
@@ -125,6 +125,7 @@ function CreateNewProject(props) {
         <div className="d-flex flex-column align-items-center">
           <div className="d-flex flex-row align-items-center">
             <div
+              onClick={() => setVisibleSonHuongPicker(true)}
               style={{
                 fontWeight: "bold",
                 backgroundColor: "white",
@@ -150,6 +151,7 @@ function CreateNewProject(props) {
                   width: 30,
                   height: 30,
                   rotate: `${example ? example : 0}deg`,
+                  transition: "1s linear",
                 }}
               />
               <i
@@ -375,7 +377,7 @@ function CreateNewProject(props) {
           );
         })}
       </div>
-      {!isPermission && (
+      {/* {!isPermission && (
         <div
           onClick={(e) => {
             e.preventDefault();
@@ -393,7 +395,13 @@ function CreateNewProject(props) {
             width: "100vw",
             top: 0,
           }}></div>
-      )}
+      )} */}
+      <ModalPickDegree
+        data={compassPicker}
+        setAngle={setAngle}
+        visibleSonHuongPicker={visibleSonHuongPicker}
+        setVisibleSonHuongPicker={setVisibleSonHuongPicker}
+      />
     </>
   );
 }
@@ -462,4 +470,65 @@ const ThuocDoCanBang = React.forwardRef((props, ref) => {
     </svg>
   );
 });
+const ModalPickDegree = ({
+  data,
+  setAngle,
+  visibleSonHuongPicker,
+  setVisibleSonHuongPicker,
+}) => {
+  return (
+    <Modal
+      centered
+      show={visibleSonHuongPicker}
+      onHide={() => setVisibleSonHuongPicker(false)}
+      dialogClassName="modal-90w"
+      aria-labelledby="example-custom-modal-styling-title">
+      <Modal.Header className="d-flex flex-row justify-content-center position-relative">
+        <Modal.Title style={{}}>
+          <div style={{}}>Chọn sơn hướng</div>
+        </Modal.Title>
+        <div
+          onClick={() => setVisibleSonHuongPicker(false)}
+          className="position-absolute"
+          style={{ right: 10, fontSize: 30 }}>
+          <i className="fa fa-times"></i>
+        </div>
+      </Modal.Header>
+      <Modal.Body className="grid-example">
+        <div class="input-group mb-3">
+          <span class="input-group-text" id="basic-addon1">
+            <i className="fa fa-search"></i>
+          </span>
+          <input type="text" class="form-control" placeholder="Nhập độ hướng" />
+          <span class="input-group-text" id="basic-addon1">
+            <i className="fa fa-times"></i>
+          </span>
+        </div>
+        <div
+          style={{ overflow: "scroll", height: 300 }}
+          className="d-flex flex-row flex-wrap ">
+          {data.map((item, index) => {
+            return (
+              <div
+                onClick={() => {
+                  setAngle(item.value);
+                  setVisibleSonHuongPicker(false);
+                }}
+                style={{ width: "33.33%" }}
+                className="d-flex flex-column align-items-center border">
+                <div className="" style={{ fontWeight: "bold" }}>
+                  {item.name}
+                </div>
+                <div style={{ fontSize: 12 }}>
+                  {item.value}
+                  <span>&deg;</span>
+                </div>
+              </div>
+            );
+          })}
+        </div>
+      </Modal.Body>
+    </Modal>
+  );
+};
 export default CreateNewProject;

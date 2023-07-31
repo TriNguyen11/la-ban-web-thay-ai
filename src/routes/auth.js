@@ -5,9 +5,6 @@ import React from "react";
 const CreateNewProject = React.lazy(() =>
   import("@floorplan/views/CreateNewProject")
 );
-const FloorPlanInfo = React.lazy(() =>
-  import("@floorplan/views/FloorPlanInfo")
-);
 
 const routes = {
   // login: {
@@ -30,13 +27,6 @@ const routes = {
     auth: true,
     exact: true,
     main: <CreateNewProject />,
-  },
-  floorplan_info: {
-    path: "/floorplan/:id",
-    name: "Project",
-    auth: true,
-    exact: false,
-    main: <FloorPlanInfo />,
   },
 };
 
