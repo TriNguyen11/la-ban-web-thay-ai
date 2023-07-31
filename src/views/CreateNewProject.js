@@ -253,9 +253,17 @@ function CreateNewProject(props) {
           <div style={{ textTransform: "uppercase", color: "white" }}>
             Toa:{" "}
             {todos.getDirectionPhongThuyName(
-              angle >= 180 ? angle - 180 : 180 + angle
+              angle - 180 >= 0
+                ? (angle - 180).toFixed([1])
+                : (180 + Number(angle)).toFixed([1])
             )}{" "}
-            ({todos.getDirectionName(angle >= 180 ? angle - 180 : 180 + angle)})
+            (
+            {todos.getDirectionName(
+              angle - 180 >= 0
+                ? (angle - 180).toFixed([1])
+                : (180 + Number(angle)).toFixed([1])
+            )}
+            )
           </div>
 
           <div className="d-flex flex-row align-items-center">
@@ -267,7 +275,9 @@ function CreateNewProject(props) {
                 padding: "2px 10px",
                 marginRight: 8,
               }}>
-              {angle - 180 >= 0 ? angle - 180 : 180 + Number(angle)}
+              {angle - 180 >= 0
+                ? (angle - 180).toFixed([1])
+                : (180 + Number(angle)).toFixed([1])}
               <span>&deg;</span>
             </div>
           </div>
