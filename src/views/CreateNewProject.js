@@ -36,9 +36,6 @@ function CreateNewProject(props) {
     }
   };
 
-  let is_running = false;
-  let demo_button = document.getElementById("start_demo");
-
   React.useEffect(() => {
     const cpss = todos.getCompasses();
     console.log(cpss, "cpss");
@@ -270,7 +267,7 @@ function CreateNewProject(props) {
                 padding: "2px 10px",
                 marginRight: 8,
               }}>
-              {Math.abs(angle >= 180 ? angle - 180 : 180 + angle)}
+              {angle >= 180 ? angle - 180 : 180 + angle}
               <span>&deg;</span>
             </div>
           </div>
