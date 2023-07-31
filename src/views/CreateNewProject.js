@@ -218,15 +218,42 @@ function CreateNewProject(props) {
       </div>
       {/* la ban */}
       <div style={{}} className="d-flex flex-row justify-content-center">
-        <Image
-          src={"/la-ban/24-son-huong.png"}
-          // src={"../assets/la-ban/60-hoa-giap.png"}
+        <div
           style={{
             width: "90%",
             height: "40%",
-            rotate: `${angle ? 360 - angle : 0}deg`,
-          }}
-        />
+            position: "relative",
+          }}>
+          <Image
+            src={"/la-ban/24-son-huong.png"}
+            // src={"../assets/la-ban/60-hoa-giap.png"}
+            style={{
+              width: "100%",
+              height: "100%",
+              rotate: `${angle ? 360 - angle : 0}deg`,
+            }}
+          />
+          <div
+            style={{
+              width: 1,
+              height: "100%",
+              backgroundColor: "red",
+              position: "absolute",
+              top: 0,
+              left: "50%",
+            }}
+          />
+          <div
+            style={{
+              width: "100%",
+              height: 1,
+              backgroundColor: "red",
+              position: "absolute",
+              top: "50%",
+              left: "0%",
+            }}
+          />
+        </div>
       </div>
       {/* <div style={{}} className="d-flex flex-row justify-content-center">
         <Image
