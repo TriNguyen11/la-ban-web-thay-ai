@@ -120,12 +120,15 @@ function CreateNewProject(props) {
       );
     }
   }
-  if (
-    DeviceMotionEvent &&
-    typeof DeviceMotionEvent.requestPermission === "function"
-  ) {
-    DeviceMotionEvent.requestPermission();
-  }
+  setTimeout(() => {
+    if (
+      DeviceMotionEvent &&
+      typeof DeviceMotionEvent.requestPermission === "function"
+    ) {
+      DeviceMotionEvent.requestPermission();
+    }
+  }, 5000);
+
   React.useEffect(() => {
     if (
       DeviceMotionEvent &&
@@ -221,6 +224,14 @@ function CreateNewProject(props) {
         {/* right */}
         <div style={{}} className="d-flex flex-column align-items-center">
           <Button
+            onClick={() => {
+              if (
+                DeviceMotionEvent &&
+                typeof DeviceMotionEvent.requestPermission === "function"
+              ) {
+                DeviceMotionEvent.requestPermission();
+              }
+            }}
             style={{
               background: "white",
               borderRadius: 9999,
