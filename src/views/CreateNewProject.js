@@ -83,15 +83,17 @@ function CreateNewProject(props) {
   }
 
   React.useEffect(() => {
-    if (
-      DeviceMotionEvent &&
-      typeof DeviceMotionEvent.requestPermission === "function"
-    ) {
-      DeviceMotionEvent.requestPermission();
-    }
-    // DeviceMotionEvent.requestPermission();
     window.addEventListener("deviceorientation", deviceOrientationListener);
   }, []);
+  React.useEffect(() => {
+    if (lock)
+      window.removeEventListener(
+        "deviceorientation",
+        deviceOrientationListener
+      );
+    else
+      window.addEventListener("deviceorientation", deviceOrientationListener);
+  }, [lock]);
   console.log(visibleSonHuongPicker, "asd");
   // console.log(labanObj.Accelerometer_z, "labanObj.Accelerometer_z");
   return (
@@ -143,7 +145,12 @@ function CreateNewProject(props) {
                 {" "}
               </i>
             </div>
-            <div className="position-relative" style={{}}>
+            <div
+              className="position-relative"
+              style={{}}
+              onClick={() => {
+                setLock(!lock);
+              }}>
               <Image
                 src={"/la-ban/24-son-huong.png"}
                 // src={"../assets/la-ban/60-hoa-giap.png"}
@@ -151,11 +158,11 @@ function CreateNewProject(props) {
                   width: 30,
                   height: 30,
                   rotate: `${example ? example : 0}deg`,
-                  transition: "1s linear",
+                  opacity: lock === true ? 0.5 : 1,
                 }}
               />
               <i
-                className=" fa fa-lock  position-absolute "
+                className=" fa fa-lock position-absolute "
                 style={{
                   cursor: "pointer",
                   fontSize: 12,
@@ -233,6 +240,7 @@ function CreateNewProject(props) {
               width: "100%",
               height: "100%",
               rotate: `${angle ? 360 - angle : 0}deg`,
+              transition: "0.1s linear",
             }}
           />
           <div
@@ -488,7 +496,13 @@ const ModalPickDegree = ({
           <div style={{}}>Chọn sơn hướng</div>
         </Modal.Title>
         <div
-          onClick={() => setVisibleSonHuongPicker(false)}
+          onClick={() => {
+            setVisibleSonHuongPicker(false);
+            window.removeEventListener(
+              "deviceorientation",
+              deviceOrientationListener
+            );
+          }}
           className="position-absolute"
           style={{ right: 10, fontSize: 30 }}>
           <i className="fa fa-times"></i>
