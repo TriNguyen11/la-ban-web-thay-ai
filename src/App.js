@@ -18,19 +18,23 @@ import Event from "@floorplan/system/event";
 import { AppProvider } from "@floorplan/provider";
 import Objects from "@floorplan/views/objects/index";
 import "./scss/floorplan.scss";
+import Head from "next/head";
 const App = () => {
   return typeof document !== "undefined" ? (
     <>
-      <AppProvider>
+      <Head>
         <meta
           name="viewport"
-          content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
-          <BrowserRouter>
-            <Components.ScrollToTop>
-              <Components.Content />
-            </Components.ScrollToTop>
-          </BrowserRouter>
-        </meta>
+          content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0"
+        />
+        <title>Web Dev Tutor</title>
+      </Head>
+      <AppProvider>
+        <BrowserRouter>
+          <Components.ScrollToTop>
+            <Components.Content />
+          </Components.ScrollToTop>
+        </BrowserRouter>
       </AppProvider>
     </>
   ) : (

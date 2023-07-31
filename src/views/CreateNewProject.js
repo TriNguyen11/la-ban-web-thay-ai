@@ -255,17 +255,6 @@ function CreateNewProject(props) {
           />
         </div>
       </div>
-      {/* <div style={{}} className="d-flex flex-row justify-content-center">
-        <Image
-          src={"/la-ban/24-son-huong.png"}
-          // src={"../assets/la-ban/60-hoa-giap.png"}
-          style={{
-            width: "50%",
-            height: "20%",
-            rotate: `${labanObj ? labanObj?.z : 0}deg`,
-          }}
-        />
-      </div> */}
       {/* bottom */}
       <div
         className="d-flex flex-row justify-content-between align-items-end"
