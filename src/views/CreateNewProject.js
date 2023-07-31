@@ -110,13 +110,11 @@ function CreateNewProject(props) {
     if (typeof event.webkitCompassHeading !== "undefined") {
       alpha = event.webkitCompassHeading; //iOS non-standard
       var heading = alpha;
-      document.getElementById("heading").innerHTML = heading.toFixed([0]);
-      setAngle(heading.toFixed([0]));
+      setAngle(heading.toFixed([1]));
     } else {
       var heading = 360 - alpha; //heading [0, 360)
-      document.getElementById("heading").innerHTML = heading.toFixed([0]);
       setAngle(
-        (heading - 210 < 0 ? heading + 360 - 210 : heading - 210).toFixed([0])
+        (heading - 210 < 0 ? heading + 360 - 210 : heading - 210).toFixed([1])
       );
     }
   }
@@ -215,9 +213,8 @@ function CreateNewProject(props) {
               color: "white",
               marginTop: 8,
             }}>
-            Hướng: {angle}
-            {/* {directionPhongThuyName} ({directionName}) */}
-            <p id="heading"></p>
+            Hướng:
+            {directionPhongThuyName} ({directionName})<p id="heading"></p>
           </div>
         </div>
 
@@ -300,7 +297,6 @@ function CreateNewProject(props) {
         <div className="d-flex flex-column align-items-center">
           <div style={{ textTransform: "uppercase", color: "white" }}>
             Toa: {directionOppositePhongThuyName} ({directionOppositeName})
-            Test1
           </div>
           <div className="d-flex flex-row align-items-center">
             <div
