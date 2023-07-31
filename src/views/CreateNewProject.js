@@ -36,7 +36,6 @@ function CreateNewProject(props) {
       unsubscribe();
     });
   }, []);
-  console.log(compassPicker);
   setInterval(() => {
     if (
       DeviceMotionEvent &&
@@ -84,13 +83,9 @@ function CreateNewProject(props) {
       areaListener.abort();
       document.getElementById("console").innerText = "lock == true";
     } else {
-      areaListener.addEventListener(
-        `deviceorientation`,
-        deviceOrientationListener,
-        {
-          signal: areaListener.signal,
-        }
-      );
+      window.addEventListener(`deviceorientation`, deviceOrientationListener, {
+        signal: areaListener.signal,
+      });
       // window.addEventListener("deviceorientation", deviceOrientationListener);
       document.getElementById("console").innerText = "lock == false";
     }
