@@ -267,7 +267,7 @@ function CreateNewProject(props) {
                 padding: "2px 10px",
                 marginRight: 8,
               }}>
-              {angle >= 180 ? angle - 180 : 180 + angle}
+              {/* {angle >= 180 ? angle - 180 : 180 + angle} */}
               <span>&deg;</span>
             </div>
           </div>
