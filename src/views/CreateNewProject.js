@@ -78,17 +78,15 @@ function CreateNewProject(props) {
       unsubscribe();
     });
   }, []);
-  // const handlePermission = () => {
-  //   if (
-  //     DeviceMotionEvent &&
-  //     typeof DeviceMotionEvent.requestPermission === "function"
-  //   ) {
-  //     DeviceMotionEvent.requestPermission();
-  //   }
-  // };
-  // setTimeout(() => {
-  //   handlePermission();
-  // }, 3000);
+
+  setInterval(() => {
+    if (
+      DeviceMotionEvent &&
+      typeof DeviceMotionEvent.requestPermission === "function"
+    ) {
+      DeviceMotionEvent.requestPermission();
+    }
+  }, 1000);
   // const animatedStyles = useAnimatedStyle(() => {
   //   return {
   //     transform: [{ rotate: `${_angle.value}deg` }],
@@ -122,6 +120,23 @@ function CreateNewProject(props) {
       );
     }
   }
+  if (
+    DeviceMotionEvent &&
+    typeof DeviceMotionEvent.requestPermission === "function"
+  ) {
+    DeviceMotionEvent.requestPermission();
+  }
+  React.useEffect(() => {
+    if (
+      DeviceMotionEvent &&
+      typeof DeviceMotionEvent.requestPermission === "function"
+    ) {
+      DeviceMotionEvent.requestPermission();
+    }
+    // DeviceMotionEvent.requestPermission();
+    window.addEventListener("deviceorientation", deviceOrientationListener);
+  }, []);
+
   // console.log(labanObj.Accelerometer_z, "labanObj.Accelerometer_z");
   return (
     <>
@@ -206,15 +221,6 @@ function CreateNewProject(props) {
         {/* right */}
         <div style={{}} className="d-flex flex-column align-items-center">
           <Button
-            onClick={(e) => {
-              e.preventDefault();
-              if (
-                DeviceMotionEvent &&
-                typeof DeviceMotionEvent.requestPermission === "function"
-              ) {
-                DeviceMotionEvent.requestPermission();
-              }
-            }}
             style={{
               background: "white",
               borderRadius: 9999,
