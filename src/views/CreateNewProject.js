@@ -84,9 +84,9 @@ function CreateNewProject(props) {
       areaListener.abort();
       document.getElementById("console").innerText = "lock == true";
     } else {
-      area.addEventListener(`deviceorientation`, deviceOrientationListener, {
-        signal: areaListener.signal,
-      });
+      // area.addEventListener(`deviceorientation`, deviceOrientationListener, {
+      //   signal: areaListener.signal,
+      // });
       // window.addEventListener("deviceorientation", deviceOrientationListener);
       document.getElementById("console").innerText = "lock == false";
     }
