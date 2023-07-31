@@ -70,15 +70,17 @@ function CreateNewProject(props) {
     var beta = event.beta; //x axis rotation [-180, 180]
     var gamma = event.gamma; //y axis rotation [-90, 90]
     //Check if absolute values have been sent
-    if (typeof event.webkitCompassHeading !== "undefined") {
-      alpha = event.webkitCompassHeading; //iOS non-standard
-      var heading = alpha;
-      setAngle(heading.toFixed([1]));
-    } else {
-      var heading = 360 - alpha; //heading [0, 360)
-      setAngle(
-        (heading - 210 < 0 ? heading + 360 - 210 : heading - 210).toFixed([1])
-      );
+    if (!lock) {
+      if (typeof event.webkitCompassHeading !== "undefined") {
+        alpha = event.webkitCompassHeading; //iOS non-standard
+        var heading = alpha;
+        setAngle(heading.toFixed([1]));
+      } else {
+        var heading = 360 - alpha; //heading [0, 360)
+        setAngle(
+          (heading - 210 < 0 ? heading + 360 - 210 : heading - 210).toFixed([1])
+        );
+      }
     }
   }
 
