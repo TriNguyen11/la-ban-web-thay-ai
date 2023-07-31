@@ -386,6 +386,25 @@ function CreateNewProject(props) {
           );
         })}
       </div>
+      {!isPermission && (
+        <div
+          onClick={(e) => {
+            e.preventDefault();
+            if (
+              DeviceMotionEvent &&
+              typeof DeviceMotionEvent.requestPermission === "function"
+            ) {
+              DeviceMotionEvent.requestPermission();
+              setIsPermission(true);
+            }
+          }}
+          style={{
+            position: "fixed",
+            height: "100vh",
+            width: "100vw",
+            top: 0,
+          }}></div>
+      )}
     </>
   );
 }
