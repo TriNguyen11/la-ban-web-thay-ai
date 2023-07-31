@@ -14,6 +14,7 @@ function CreateNewProject(props) {
   const shareImageViewRef = React.useRef();
   const [visibleSonHuongPicker, setVisibleSonHuongPicker] =
     React.useState(false);
+  const [isPermission, setIsPermission] = React.useState(false);
   const [lock, setLock] = React.useState(false);
   const [text, setText] = React.useState([]);
   const [angle, setAngle] = React.useState(0);
@@ -77,7 +78,20 @@ function CreateNewProject(props) {
       unsubscribe();
     });
   }, []);
-
+  const Inter = setInterval(() => {
+    if (!isPermission) {
+      if (
+        DeviceMotionEvent &&
+        typeof DeviceMotionEvent.requestPermission === "function"
+      ) {
+        DeviceMotionEvent.requestPermission();
+        window.addEventListener("deviceorientation", deviceOrientationListener);
+        setIsPermission(true);
+      }
+    } else {
+      clearInterval(Inter);
+    }
+  }, 1000);
   // const animatedStyles = useAnimatedStyle(() => {
   //   return {
   //     transform: [{ rotate: `${_angle.value}deg` }],
@@ -103,19 +117,7 @@ function CreateNewProject(props) {
       var heading = alpha;
       document.getElementById("heading").innerHTML = heading.toFixed([0]);
       setAngle(heading.toFixed([0]));
-      if (
-        DeviceMotionEvent &&
-        typeof DeviceMotionEvent.requestPermission === "function"
-      ) {
-        DeviceMotionEvent.requestPermission();
-      }
     } else {
-      if (
-        DeviceMotionEvent &&
-        typeof DeviceMotionEvent.requestPermission === "function"
-      ) {
-        DeviceMotionEvent.requestPermission();
-      }
       var heading = 360 - alpha; //heading [0, 360)
       document.getElementById("heading").innerHTML = heading.toFixed([0]);
       setAngle(
@@ -123,23 +125,6 @@ function CreateNewProject(props) {
       );
     }
   }
-  if (
-    DeviceMotionEvent &&
-    typeof DeviceMotionEvent.requestPermission === "function"
-  ) {
-    DeviceMotionEvent.requestPermission();
-  }
-  React.useEffect(() => {
-    if (
-      DeviceMotionEvent &&
-      typeof DeviceMotionEvent.requestPermission === "function"
-    ) {
-      DeviceMotionEvent.requestPermission();
-    }
-    // DeviceMotionEvent.requestPermission();
-    window.addEventListener("deviceorientation", deviceOrientationListener);
-  }, []);
-
   // console.log(labanObj.Accelerometer_z, "labanObj.Accelerometer_z");
   return (
     <>
@@ -292,6 +277,7 @@ function CreateNewProject(props) {
         <div className="d-flex flex-column align-items-center">
           <div style={{ textTransform: "uppercase", color: "white" }}>
             Toa: {directionOppositePhongThuyName} ({directionOppositeName})
+            Test1
           </div>
           <div className="d-flex flex-row align-items-center">
             <div
