@@ -209,6 +209,15 @@ function CreateNewProject(props) {
         {/* right */}
         <div style={{}} className="d-flex flex-column align-items-center">
           <Button
+            onClick={(e) => {
+              e.preventDefault();
+              if (
+                DeviceMotionEvent &&
+                typeof DeviceMotionEvent.requestPermission === "function"
+              ) {
+                DeviceMotionEvent.requestPermission();
+              }
+            }}
             style={{
               background: "white",
               borderRadius: 9999,
