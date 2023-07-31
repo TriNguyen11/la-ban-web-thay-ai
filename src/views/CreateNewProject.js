@@ -272,7 +272,7 @@ function CreateNewProject(props) {
           style={{
             width: "50%",
             height: "20%",
-            rotate: `${angle ? angle : 0}deg`,
+            rotate: `${angle ? 360 - angle : 0}deg`,
           }}
         />
       </div>
