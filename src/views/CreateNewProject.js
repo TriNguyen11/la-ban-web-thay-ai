@@ -78,10 +78,11 @@ function CreateNewProject(props) {
 
   React.useEffect(() => {
     if (lock) {
-      // window.removeEventListener(
-      //   "deviceorientation",
-      //   deviceOrientationListener
-      // );
+      window.removeEventListener(
+        `deviceorientation`,
+        deviceOrientationListener,
+        true
+      );
       areaListener.abort();
     } else {
       window.addEventListener(`deviceorientation`, deviceOrientationListener, {
