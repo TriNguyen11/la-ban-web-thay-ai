@@ -86,13 +86,16 @@ function CreateNewProject(props) {
     window.addEventListener("deviceorientation", deviceOrientationListener);
   }, []);
   React.useEffect(() => {
-    if (lock)
+    if (lock) {
       window.removeEventListener(
         "deviceorientation",
         deviceOrientationListener
       );
-    else
+      document.getElementById("console").innerText = "lock == true";
+    } else {
       window.addEventListener("deviceorientation", deviceOrientationListener);
+      document.getElementById("console").innerText = "lock == false";
+    }
   }, [lock]);
   console.log(visibleSonHuongPicker, "asd");
   // console.log(labanObj.Accelerometer_z, "labanObj.Accelerometer_z");
@@ -385,6 +388,7 @@ function CreateNewProject(props) {
           );
         })}
       </div>
+      <div id="console">asd</div>
       {/* {!isPermission && (
         <div
           onClick={(e) => {
