@@ -5,28 +5,19 @@ import todos from "./todos";
 
 let magnetometer = null;
 let accelerometer = null;
-const SHAKE_THRESHOLD = 10;
 
 function CreateNewProject(props) {
   const docanbangRef = React.useRef();
-  const viewshotRef = React.useRef();
-  const compassPickerComponent = React.useRef();
-  const shareImageViewRef = React.useRef();
   const [visibleSonHuongPicker, setVisibleSonHuongPicker] =
     React.useState(false);
   const [isPermission, setIsPermission] = React.useState(false);
   const [lock, setLock] = React.useState(false);
-  const [text, setText] = React.useState([]);
   const [angle, setAngle] = React.useState(0);
   // const [docanbang,setDoCanBang] = React.useState({x: 0,y:0,z:0})
   const [compassPicker, setCompassPicker] = React.useState([]);
-  const [labanObj, setLabaObj] = React.useState({});
-  // const labanMaTrix = useValue(Skia.Matrix());
-
-  const [example, setExample] = React.useState();
   // let _angle = useSharedValue(0);
   // _angle.addListener(({value}) => setAngle(Math.round(value)));
-
+  const areaListener = new AbortController();
   const unsubscribe = () => {
     if (magnetometer) {
       magnetometer.unsubscribe();
@@ -86,13 +77,17 @@ function CreateNewProject(props) {
 
   React.useEffect(() => {
     if (lock) {
-      window.removeEventListener(
-        "deviceorientation",
-        deviceOrientationListener
-      );
+      // window.removeEventListener(
+      //   "deviceorientation",
+      //   deviceOrientationListener
+      // );
+      areaListener.abort();
       document.getElementById("console").innerText = "lock == true";
     } else {
-      window.addEventListener("deviceorientation", deviceOrientationListener);
+      area.addEventListener(`deviceorientation`, deviceOrientationListener, {
+        signal: areaListener.signal,
+      });
+      // window.addEventListener("deviceorientation", deviceOrientationListener);
       document.getElementById("console").innerText = "lock == false";
     }
   }, [lock]);
@@ -159,7 +154,7 @@ function CreateNewProject(props) {
                 style={{
                   width: 30,
                   height: 30,
-                  rotate: `${example ? example : 0}deg`,
+                  // rotate: `${example ? example : 0}deg`,
                   opacity: lock === true ? 0.5 : 1,
                 }}
               />
