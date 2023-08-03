@@ -1,3 +1,4 @@
+import { useGesture } from "react-use-gesture";
 import React from "react";
 import { Button, Col, Container, Image, Modal, Row } from "react-bootstrap";
 
@@ -8,6 +9,8 @@ let accelerometer = null;
 
 function CreateNewProject(props) {
   const docanbangRef = React.useRef();
+  const imageRef = React.useRef();
+  const [crop, setCrop] = React.useState({ x: 0, y: 0 });
   const [visibleSonHuongPicker, setVisibleSonHuongPicker] =
     React.useState(false);
   const [isPermission, setIsPermission] = React.useState(false);
@@ -36,6 +39,7 @@ function CreateNewProject(props) {
       unsubscribe();
     });
   }, []);
+  console.log(window.innerWidth);
   setInterval(() => {
     if (
       DeviceMotionEvent &&
@@ -76,6 +80,18 @@ function CreateNewProject(props) {
       // document.getElementById("console").innerText = `lock is ${lock}`;
     }
   }
+
+  useGesture(
+    {
+      onDrag: ({ offset: [dx, dy] }) => {
+        setCrop((crop) => ({ ...crop, x: dx, y: dy }));
+      },
+    },
+    {
+      domTarget: imageRef,
+      eventOptions: { passive: false },
+    }
+  );
 
   React.useEffect(() => {
     if (!lock) {
@@ -235,38 +251,52 @@ function CreateNewProject(props) {
           style={{
             width: "90%",
             height: "40%",
-            position: "relative",
+
+            overflow: "hidden",
           }}>
-          <Image
-            src={"/la-ban/24-son-huong.png"}
-            // src={"../assets/la-ban/60-hoa-giap.png"}
-            style={{
-              width: "100%",
-              height: "100%",
-              rotate: `${angle ? 360 - angle : 0}deg`,
-              transition: "0.1s linear",
-            }}
-          />
           <div
             style={{
-              width: 1,
-              height: "100%",
-              backgroundColor: "red",
-              position: "absolute",
-              top: 0,
-              left: "50%",
-            }}
-          />
-          <div
-            style={{
-              width: "100%",
-              height: 1,
-              backgroundColor: "red",
-              position: "absolute",
-              top: "50%",
-              left: "0%",
-            }}
-          />
+              position: "relative",
+              left: crop.x,
+              top: crop.y,
+            }}>
+            <img
+              draggable={false}
+              alt=""
+              src={"/la-ban/24-son-huong.png"}
+              width="300rem"
+              ref={imageRef}
+              style={{
+                width: "100%",
+                height: "100%",
+                touchAction: "none",
+                position: "relative",
+                rotate: `${angle ? 360 - angle : 0}deg`,
+                transition: "0.1s linear",
+              }}
+            />
+            <div
+              style={{
+                width: 1,
+                height: "100%",
+                backgroundColor: "red",
+                position: "absolute",
+                top: 0,
+                left: "50%",
+                top: "0%",
+              }}
+            />
+            <div
+              style={{
+                width: "100%",
+                height: 1,
+                backgroundColor: "red",
+                position: "absolute",
+                top: "50%",
+                left: "0%",
+              }}
+            />
+          </div>
         </div>
       </div>
       {/* bottom */}
@@ -390,7 +420,7 @@ function CreateNewProject(props) {
         })}
       </div>
       <div id="console">asd</div>
-      {!isPermission && (
+      {/* {!isPermission && (
         <div
           onClick={(e) => {
             e.preventDefault();
@@ -408,7 +438,7 @@ function CreateNewProject(props) {
             width: "100vw",
             top: 0,
           }}></div>
-      )}
+      )} */}
       <ModalPickDegree
         data={compassPicker}
         setAngle={setAngle}
@@ -548,6 +578,54 @@ const ModalPickDegree = ({
         </div>
       </Modal.Body>
     </Modal>
+  );
+};
+const TransformComponent = ({ src }) => {
+  const [crop, setCrop] = useState({ x: 0, y: 0, scale: 1 });
+  const [zoomed, setZoomed] = useState(false);
+  const imageRef = useRef();
+
+  const scale = zoomed ? 1 : 2;
+  const handleClick = () => {
+    setZoomed(!zoomed);
+    // setCrop({ ...crop, scale: scale });
+  };
+  useGesture(
+    {
+      onDrag: ({ offset: [dx, dy] }) => {
+        setCrop((crop) => ({ ...crop, x: dx, y: dy }));
+      },
+      onPinch: ({ offset: [d] }) => {
+        // setCrop((crop) => ({ ...crop, scale: 1 + d / 50 }));
+      },
+    },
+    {
+      domTarget: imageRef,
+      eventOptions: { passive: false },
+    }
+  );
+  return (
+    <>
+      <div style={{ overflow: "hidden", border: "solid 2px blue" }}>
+        <div>
+          <img
+            draggable={false}
+            onClick={handleClick}
+            alt=""
+            src={src}
+            width="300rem"
+            ref={imageRef}
+            style={{
+              left: crop.x,
+              top: crop.y,
+              transform: `scale(${crop.scale})`,
+              touchAction: "none",
+              position: "relative",
+            }}
+          />
+        </div>
+      </div>
+    </>
   );
 };
 export default CreateNewProject;
