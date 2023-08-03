@@ -77,19 +77,26 @@ function CreateNewProject(props) {
   }
 
   React.useEffect(() => {
-    if (lock) {
-      window.removeEventListener(
-        `deviceorientation`,
-        deviceOrientationListener,
-        true
-      );
-      areaListener.abort();
-    } else {
-      window.addEventListener(`deviceorientation`, deviceOrientationListener, {
-        signal: areaListener.signal,
-      });
-      // window.addEventListener("deviceorientation", deviceOrientationListener);
-    }
+    return () => {
+      if (lock) {
+        window.removeEventListener(
+          `deviceorientation`,
+          deviceOrientationListener,
+          true
+        );
+        areaListener.abort();
+      }
+      if (!lock) {
+        window.addEventListener(
+          `deviceorientation`,
+          deviceOrientationListener,
+          {
+            signal: areaListener.signal,
+          }
+        );
+        // window.addEventListener("deviceorientation", deviceOrientationListener);
+      }
+    };
   }, [lock]);
   console.log(visibleSonHuongPicker, "asd");
   // console.log(labanObj.Accelerometer_z, "labanObj.Accelerometer_z");
