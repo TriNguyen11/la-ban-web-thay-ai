@@ -383,7 +383,7 @@ function CreateNewProject(props) {
         })}
       </div>
       <div id="console">asd</div>
-      {/* {!isPermission && (
+      {!isPermission && (
         <div
           onClick={(e) => {
             e.preventDefault();
@@ -401,7 +401,7 @@ function CreateNewProject(props) {
             width: "100vw",
             top: 0,
           }}></div>
-      )} */}
+      )}
       <ModalPickDegree
         data={compassPicker}
         setAngle={setAngle}
