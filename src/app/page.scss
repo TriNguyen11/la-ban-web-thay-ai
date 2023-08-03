@@ -5,6 +5,9 @@ html,body{
   height: 100vh;
   overflow: hidden;
 }
+body {
+  touch-action: pan-x pan-y;
+}
 
 .console-log{
   position: absolute;
