@@ -61,7 +61,7 @@ function CreateNewProject(props) {
     var gamma = event.gamma; //y axis rotation [-90, 90]
     //Check if absolute values have been sent
     if (!lock) {
-      document.getElementById("console").innerText = "lock == false";
+      // document.getElementById("console").innerText = "lock == false";
       if (typeof event.webkitCompassHeading !== "undefined") {
         alpha = event.webkitCompassHeading; //iOS non-standard
         var heading = alpha;
@@ -73,7 +73,7 @@ function CreateNewProject(props) {
         );
       }
     } else {
-      document.getElementById("console").innerText = `lock is ${lock}`;
+      // document.getElementById("console").innerText = `lock is ${lock}`;
     }
   }
 
@@ -151,6 +151,9 @@ function CreateNewProject(props) {
               style={{}}
               onClick={() => {
                 setLock(!lock);
+                document.getElementById(
+                  "console"
+                ).innerText = `lock is ${lock}`;
               }}>
               <Image
                 src={"/la-ban/24-son-huong.png"}
