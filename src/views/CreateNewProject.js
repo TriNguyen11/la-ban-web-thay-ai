@@ -72,11 +72,18 @@ function CreateNewProject(props) {
           (heading - 210 < 0 ? heading + 360 - 210 : heading - 210).toFixed([1])
         );
       }
+    } else {
+      document.getElementById("console").innerText = `lock is ${lock}`;
     }
-    document.getElementById("console").innerText = "lock == true";
   }
 
   React.useEffect(() => {
+    if (!lock) {
+      window.addEventListener(`deviceorientation`, deviceOrientationListener, {
+        signal: areaListener.signal,
+      });
+      // window.addEventListener("deviceorientation", deviceOrientationListener);
+    }
     return () => {
       if (lock) {
         window.removeEventListener(
@@ -85,16 +92,6 @@ function CreateNewProject(props) {
           true
         );
         areaListener.abort();
-      }
-      if (!lock) {
-        window.addEventListener(
-          `deviceorientation`,
-          deviceOrientationListener,
-          {
-            signal: areaListener.signal,
-          }
-        );
-        // window.addEventListener("deviceorientation", deviceOrientationListener);
       }
     };
   }, [lock]);
