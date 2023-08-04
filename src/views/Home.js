@@ -417,7 +417,7 @@ function CreateNewProject(props) {
           );
         })}
       </div>
-      <div id="console">asd</div>
+      <div id="console"></div>
       {!isPermission && (
         <div
           onClick={(e) => {
