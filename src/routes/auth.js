@@ -2,32 +2,33 @@ import React from "react";
 
 // const Login = React.lazy(() => import('@floorplan/views/auth/Login'))
 
-const CreateNewProject = React.lazy(() =>
-  import("@floorplan/views/CreateNewProject")
-);
+const Home = React.lazy(() => import("@floorplan/views/Home"));
+const VeTinh = React.lazy(() => import("@floorplan/views/VeTinh"));
+const LapCuc = React.lazy(() => import("@floorplan/views/LapCuc"));
 
 const routes = {
-  // login: {
-  //     path  : '/floorplan/login',
-  //     name  : "Login",
-  //     auth  : true,
-  //     exact : true,
-  //     main  : <Login />
-  // },
   home: {
     path: "/",
-    name: "Create New Project",
+    name: "Home",
     auth: true,
     exact: true,
-    main: <CreateNewProject />,
+    // main: <div>asdasd</div>,
+    main: <Home />,
   },
-  createnewproject: {
-    path: "/floorplan/createnewproject",
-    name: "Create New Project",
+  vetinh: {
+    path: "/vetinh",
+    name: "Vệ Tinh",
     auth: true,
     exact: true,
-    main: <CreateNewProject />,
+    main: <VeTinh />,
+  },
+
+  lapcuc: {
+    path: "/lapcuc",
+    name: "Lập cực",
+    auth: true,
+    exact: true,
+    main: <LapCuc />,
   },
 };
-
 export default routes;

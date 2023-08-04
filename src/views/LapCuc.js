@@ -3,11 +3,12 @@ import React from "react";
 import { Button, Col, Container, Image, Modal, Row } from "react-bootstrap";
 
 import todos from "./todos";
+import { routingNavigateBottom } from "./Constanst";
 
 let magnetometer = null;
 let accelerometer = null;
 
-function CreateNewProject(props) {
+function LapCuc(props) {
   const docanbangRef = React.useRef();
   const imageRef = React.useRef();
   const [crop, setCrop] = React.useState({ x: 0, y: 0 });
@@ -39,7 +40,6 @@ function CreateNewProject(props) {
       unsubscribe();
     });
   }, []);
-  console.log(window.innerWidth);
   setInterval(() => {
     if (
       DeviceMotionEvent &&
@@ -95,9 +95,11 @@ function CreateNewProject(props) {
 
   React.useEffect(() => {
     if (!lock) {
-      window.addEventListener(`deviceorientation`, deviceOrientationListener, {
-        signal: areaListener.signal,
-      });
+      window.addEventListener(
+        `deviceorientation`,
+        deviceOrientationListener,
+        true
+      );
       // window.addEventListener("deviceorientation", deviceOrientationListener);
     }
     return () => {
@@ -107,11 +109,9 @@ function CreateNewProject(props) {
           deviceOrientationListener,
           true
         );
-        areaListener.abort();
       }
     };
   }, [lock]);
-  console.log(visibleSonHuongPicker, "asd");
   // console.log(labanObj.Accelerometer_z, "labanObj.Accelerometer_z");
   return (
     <>
@@ -383,13 +383,10 @@ function CreateNewProject(props) {
           width: "100%",
         }}>
         <div style={{}} className="d-flex flex-row align-items-center"></div>
-        {[
-          { title: "Vật lý", icon: "icon-vat-ly" },
-          { title: "Vệ tinh", icon: "icon-ve-tinh" },
-          { title: "Lập cực", icon: "icon-lap-cuc" },
-        ].map((item) => {
+        {routingNavigateBottom.map((item) => {
           return (
             <div
+              onClick={item.onClick}
               style={{
                 background: "transparent",
                 border: "0px",
@@ -420,7 +417,7 @@ function CreateNewProject(props) {
         })}
       </div>
       <div id="console">asd</div>
-      {/* {!isPermission && (
+      {!isPermission && (
         <div
           onClick={(e) => {
             e.preventDefault();
@@ -438,7 +435,7 @@ function CreateNewProject(props) {
             width: "100vw",
             top: 0,
           }}></div>
-      )} */}
+      )}
       <ModalPickDegree
         data={compassPicker}
         setAngle={setAngle}
@@ -628,4 +625,4 @@ const TransformComponent = ({ src }) => {
     </>
   );
 };
-export default CreateNewProject;
+export default LapCuc;

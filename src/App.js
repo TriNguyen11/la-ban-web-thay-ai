@@ -28,6 +28,9 @@ const App = () => {
           content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0"
         />
         <title>Web Dev Tutor</title>
+        <script src="https://polyfill.io/v3/polyfill.min.js?features=default"></script>
+
+        {/* <script src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY"></script> */}
       </Head>
       <AppProvider>
         <BrowserRouter>

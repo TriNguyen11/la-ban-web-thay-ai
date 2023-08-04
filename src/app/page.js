@@ -1,7 +1,7 @@
 "use client";
 
 import App from "@floorplan/App";
-import CreateNewProject from "@floorplan/views/CreateNewProject";
+import CreateNewProject from "@floorplan/views/Home";
 import Image from "next/image";
 
 import React, { useEffect } from "react";
