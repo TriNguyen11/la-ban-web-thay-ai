@@ -17,7 +17,7 @@ export default function RootLayout({ children }) {
         <div
           id="application"
           className="position-relative"
-          style={{ minWidth: "100vw", minHeight: "100vh" }}>
+          style={{ minWidth: "100vw", minHeight: "100vh", overflow: "hidden" }}>
           {children}
         </div>
       </body>
