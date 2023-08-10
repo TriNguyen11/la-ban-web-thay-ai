@@ -40,7 +40,7 @@ function VeTinh(props) {
     visbleRotate: true,
   });
   const [dataTools, setDataTools] = React.useState({
-    pickColor: "#FFFFFF",
+    pickColor: "#000000",
   });
   const bind = useGesture(
     {
@@ -74,16 +74,16 @@ function VeTinh(props) {
   const onChangeColor = (e) => {
     setDataTools({ ...visibleTools, pickColor: e.hex });
   };
-  function initAutocomplete() {
-    // autocomplete = new google.maps.places.Autocomplete(
-    //   document.getElementById("autocomplete"),
-    //   {
-    //     types: ["establishment"],
-    //     componentRestrictions: { country: ["AU"] },
-    //     fields: ["place_id", "geometry", "name"],
-    //   }
-    // );
-  }
+  // function initAutocomplete() {
+  //   // autocomplete = new google.maps.places.Autocomplete(
+  //   //   document.getElementById("autocomplete"),
+  //   //   {
+  //   //     types: ["establishment"],
+  //   //     componentRestrictions: { country: ["AU"] },
+  //   //     fields: ["place_id", "geometry", "name"],
+  //   //   }
+  //   // );
+  // }
   autocomplete?.addListener("place_changed", onPlaceChanged);
   function onPlaceChanged() {
     var place = autocomplete?.getPlace();
@@ -105,7 +105,7 @@ function VeTinh(props) {
   const downloadScreenshot = () =>
     takeScreenshot(refDownload.current).then(download);
   useEffect(() => {}, []);
-  initAutocomplete();
+  // initAutocomplete();
 
   useEffect(() => {
     document.ontouchmove = function (event) {
@@ -130,11 +130,11 @@ function VeTinh(props) {
           position: "absolute",
           zIndex: 1,
         }}></Image>
-      <input
+      {/* <input
         id="autocomplete"
         placeholder="asd"
         type={"text"}
-        style={{ position: "absolute", top: 0, left: 0, zIndex: 3 }}></input>
+        style={{ position: "absolute", top: 0, left: 0, zIndex: 3 }}></input> */}
       <div id="details"></div>
       {/* header */}
       {/* <StyledMapWithAnInfoBox /> */}

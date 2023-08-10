@@ -35,9 +35,14 @@ function LapCuc(props) {
           width: "100vw",
           height: "120vh",
         }}>
-        {[0, 1, 2].map((item, index) => {
-          return <ButtonLapCuc />;
+        {[
+          { title: "Lập cực từ ảnh upload", onClick: () => {} },
+          { title: "Lập cực từ ảnh vệ tinh", onClick: () => {} },
+          { title: "Lập cực từ hình tự vẽ", onClick: () => {} },
+        ].map((item, index) => {
+          return <ButtonLapCuc title={item.title} />;
         })}
+        <img id="avatar" src="" alt="avatar" />
       </div>
       {/* navigatorBottom */}
       <div
@@ -83,7 +88,16 @@ function LapCuc(props) {
   );
 }
 const TDCBWidth = 50;
-const ButtonLapCuc = () => {
+const ButtonLapCuc = ({ title }) => {
+  const avatar = document.getElementById("avatar");
+
+  function imagePreview(e) {
+    console.log(e.target.files[0], "asd");
+    const blob = new Blob([e.target.files[0]], { type: "image/png" });
+    const blobURL = URL.createObjectURL(blob);
+    avatar.style.display = "block";
+    avatar.src = blobURL;
+  }
   return (
     <div
       style={{
@@ -92,10 +106,25 @@ const ButtonLapCuc = () => {
         color: "#C09724",
         border: "1px solid #C09724",
         borderRadius: 12,
+        position: "relative",
       }}
       className="d-flex align-items-center justify-content-center my-2 p-3">
       <i className="fa fa-images me-2"></i>
-      <div> lập cực từ ảnh upload</div>
+      <div> {title}</div>
+      {title == "Lập cực từ ảnh upload" && (
+        <input
+          type="file"
+          id="upload"
+          style={{
+            width: "100%",
+            opacity: 0,
+            cursor: "pointer",
+            position: "absolute",
+          }}
+          // onChange="imagePreview(this)"
+          onChange={imagePreview}
+        />
+      )}
     </div>
   );
 };
