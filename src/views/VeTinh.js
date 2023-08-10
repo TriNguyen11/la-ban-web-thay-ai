@@ -37,7 +37,7 @@ function VeTinh(props) {
   const [isLineRotate, setIsLineRotate] = React.useState(true);
   const [visibleTools, setVisibleTools] = React.useState({
     pickColor: false,
-    visbleRotate: false,
+    visbleRotate: true,
   });
   const [dataTools, setDataTools] = React.useState({
     pickColor: "#FFFFFF",
