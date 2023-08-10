@@ -107,6 +107,11 @@ function VeTinh(props) {
   useEffect(() => {}, []);
   initAutocomplete();
 
+  useEffect(() => {
+    document.ontouchmove = function (event) {
+      event.preventDefault();
+    };
+  }, []);
   // Display details about the valid place
   return (
     <>
