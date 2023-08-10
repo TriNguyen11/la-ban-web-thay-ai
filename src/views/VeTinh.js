@@ -111,6 +111,13 @@ function VeTinh(props) {
     document.ontouchmove = function (event) {
       event.preventDefault();
     };
+    document.addEventListener(
+      "touchmove",
+      function (e) {
+        e.preventDefault();
+      },
+      { passive: false }
+    );
   }, []);
   // Display details about the valid place
   return (
