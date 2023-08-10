@@ -1,0 +1,11 @@
+#myUse {
+    transform-origin: 50% 50%;
+    transform-box: fill-box;
+    transform: translate3d(25px, 25px, 0) rotate(var(--r, 0deg));
+}
+.chrome-picker  {
+    input{
+        color: white !important;
+    }
+
+}
