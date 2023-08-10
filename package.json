@@ -25,6 +25,8 @@
     "bootstrap": "^5.0.2",
     "eslint-config-next": "13.4.5",
     "google-maps-react": "^2.0.6",
+    "html-to-image": "^1.11.11",
+    "html2canvas": "^1.4.1",
     "i18next": "^22.5.1",
     "i18next-browser-languagedetector": "^7.0.2",
     "meshline": "^3.1.6",
@@ -43,6 +45,7 @@
     "sass": "^1.63.4",
     "tailwindcss": "3.3.2",
     "three": "^0.152.2",
+    "use-react-screenshot": "^3.0.0",
     "uuid": "^9.0.0"
   },
   "devDependencies": {

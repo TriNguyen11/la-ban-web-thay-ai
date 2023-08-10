@@ -1,12 +1,13 @@
 // import { useGesture } from "react-use-gesture";
-import React, { useEffect } from "react";
+import React, { createRef, useEffect } from "react";
 import { Button, Col, Container, Image, Modal, Row } from "react-bootstrap";
 import { compose, withProps, withStateHandlers } from "recompose";
 import { useGesture } from "@use-gesture/react";
 import { ChromePicker } from "react-color";
-
+import * as htmlToImage from "html-to-image";
 import todos from "./todos";
 import { routingNavigateBottom } from "./Constanst";
+import { useScreenshot, createFileName } from "use-react-screenshot";
 import {
   GoogleMap,
   Marker,
@@ -22,6 +23,12 @@ function VeTinh(props) {
   let autocomplete;
   const myUse = document.getElementById("myUse");
   const lineRef = React.useRef();
+  const refDownload = createRef(null);
+  const [image, takeScreenshot] = useScreenshot({
+    type: "image/jpeg",
+    quality: 1.0,
+  });
+
   const [pos, setPos] = React.useState({ x: 0, y: 0 });
   const [posLaKinh, setPosLaKinh] = React.useState({ x: 0, y: 0 });
 
@@ -87,7 +94,16 @@ function VeTinh(props) {
       document.getElementById("details").innerHTML = place.name;
     }
   }
-  console.log(isLineRotate, "visibleTools");
+
+  const download = (image, { name = "img", extension = "jpg" } = {}) => {
+    const a = document.createElement("a");
+    a.href = image;
+    a.download = createFileName(extension, name);
+    a.click();
+  };
+
+  const downloadScreenshot = () =>
+    takeScreenshot(refDownload.current).then(download);
   useEffect(() => {}, []);
   initAutocomplete();
 
@@ -110,7 +126,9 @@ function VeTinh(props) {
       <div id="details"></div>
       {/* header */}
       {/* <StyledMapWithAnInfoBox /> */}
+      {/* <div ref={refDownload}> */}
       <MyMapComponent />
+      {/* </div> */}
       {/* la ban */}
       {visibleTools.visbleRotate && (
         <div
@@ -134,6 +152,8 @@ function VeTinh(props) {
               WebkitMask: "url(/lap-cuc/mac-dinh.png) center/contain no-repeat",
               background: dataTools.pickColor,
               rotate: degPosLaKinh + "deg",
+              width: window.innerWidth,
+              height: "100%",
             }}>
             <Image
               src="/lap-cuc/mac-dinh.png"
@@ -368,9 +388,10 @@ function VeTinh(props) {
                 height: 20,
               }}></Image>
           </Button>
+          {/* Screenshot */}
           <Button
             onClick={() => {
-              console.log(123123);
+              downloadScreenshot();
             }}
             style={{
               background: "white",
