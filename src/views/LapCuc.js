@@ -92,8 +92,7 @@ const ButtonLapCuc = ({ title }) => {
   const avatar = document.getElementById("avatar");
 
   function imagePreview(e) {
-    console.log(e.target.files[0], "asd");
-    const blob = new Blob([e.target.files[0]], { type: "image/png" });
+    const blob = new Blob([e.target.files[0]]);
     const blobURL = URL.createObjectURL(blob);
     avatar.style.display = "block";
     avatar.src = blobURL;
@@ -121,7 +120,6 @@ const ButtonLapCuc = ({ title }) => {
             cursor: "pointer",
             position: "absolute",
           }}
-          // onChange="imagePreview(this)"
           onChange={imagePreview}
         />
       )}
