@@ -1,10 +1,13 @@
+import dynamic from "next/dynamic";
 import React from "react";
 
 // const Login = React.lazy(() => import('@floorplan/views/auth/Login'))
 
 const Home = React.lazy(() => import("@floorplan/views/Home"));
 const VeTinh = React.lazy(() => import("@floorplan/views/VeTinh"));
-const LapCuc = React.lazy(() => import("@floorplan/views/LapCuc"));
+const LapCuc = dynamic(() => import("@floorplan/views/LapCuc"), {
+  ssr: false,
+});
 
 const routes = {
   home: {

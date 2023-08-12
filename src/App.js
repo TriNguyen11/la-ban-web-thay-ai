@@ -29,7 +29,7 @@ const App = () => {
         />
         <title>Web Dev Tutor</title>
         <script src="https://polyfill.io/v3/polyfill.min.js?features=default"></script>
-
+        <script src="https://unpkg.com/konva@9.2.0/konva.min.js"></script>
         {/* <script src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY"></script> */}
       </Head>
       <AppProvider>
