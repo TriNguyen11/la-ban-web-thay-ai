@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 import { Button, Col, Container, Modal, Row, Image } from "react-bootstrap";
 
 import todos from "./todos";
-import { routingNavigateBottom } from "./Constanst";
+import { getDirectionPhongThuyName, routingNavigateBottom } from "./Constanst";
 import {
   Stage,
   Layer,
@@ -11,47 +11,72 @@ import {
   Transformer,
   Circle,
   Group,
+  Text,
   Image as Imagess,
 } from "react-konva";
 import useImage from "use-image";
 import Konva from "konva";
-
+import Slider from "react-rangeslider";
+import "react-rangeslider/lib/index.css";
 let magnetometer = null;
 let accelerometer = null;
 
 function LapCuc(props) {
   const [isImage, setIsImage] = useState(false);
-  const [anchorImagePreview, setAnchorImagePreview] = useState();
-  const [image] = useImage("https://konvajs.org/assets/lion.png");
+  const [degRotate, setDegRotate] = useState(0);
+  const [crop, setCrop] = useState({
+    x: 0,
+    y: 0,
+    scale: 1,
+    rotate: 0,
+    isRotate: false,
+  });
+  const [selectedId, selectShape] = React.useState(null);
   const [initImage, setInitImage] = useState([
     {
       x: 10,
       y: 10,
-      width: window.innerWidth / 2,
-      height: window.innerWidth / 2,
+      width: window.innerWidth / 1.2,
+      height: window.innerWidth / 1.2,
       id: "rect1",
     },
   ]);
+  // console.log(selectedId, "selectedId");
+  const refPinch = React.useRef();
+  useGesture(
+    {
+      onPinch: ({ offset: [scaleImage] }) => {
+        setCrop((crop) => ({ ...crop, scale: 1 + scaleImage / 100 }));
 
+        // setCrop((crop) => ({ ...crop, x: dx, y: dy }));
+      },
+      onDrag: ({ offset: [dx, dy] }) => {
+        if (selectedId === null) setCrop((crop) => ({ ...crop, x: dx, y: dy }));
+      },
+    },
+    {
+      domTarget: refPinch,
+      eventOptions: { passive: false },
+    }
+  );
   function imagePreview(e) {
     const avatar = document.getElementById("avatar");
 
     const blob = new Blob([e.target.files[0]]);
     const blobURL = URL.createObjectURL(blob);
-    // avatar.style.display = "block";
-    // avatar.style.opacity = "1";
-    // avatar.style.objectFit = "contain";
-
+    avatar.style.display = "block";
+    avatar.style.opacity = "1";
+    avatar.style.objectFit = "contain";
     avatar.src = blobURL;
     avatar.onload = () => {
-      // avatar.style.width = "100%";
-      // avatar.style.height = "100%";
-      setAnchorImagePreview([
-        { width: 0, height: 0 },
-        { width: 0, height: avatar.height },
-        { width: avatar.width, height: avatar.height },
-        { width: avatar.width, height: 0 },
-      ]);
+      avatar.style.width = "100%";
+      avatar.style.height = "100%";
+      // setAnchorImagePreview([
+      //   { width: 0, height: 0 },
+      //   { width: 0, height: avatar.height },
+      //   { width: avatar.width, height: avatar.height },
+      //   { width: avatar.width, height: 0 },
+      // ]);
     };
     setIsImage(true);
   }
@@ -75,7 +100,7 @@ function LapCuc(props) {
           zIndex: -2,
         }}></Image>
       {/* main */}
-      <div id="container"></div>
+
       <div
         style={{ height: "75%", marginTop: "15%" }}
         className="d-flex flex-column align-items-center justify-content-center">
@@ -112,7 +137,7 @@ function LapCuc(props) {
               style={{ fontSize: 30, color: "white" }}></i>
           </div>
         )}
-
+        {/* image render */}
         <div
           id="container"
           style={{
@@ -121,6 +146,7 @@ function LapCuc(props) {
             display: isImage ? "flex" : "none",
             justifyContent: "center",
             alignItems: "center",
+            overflow: "hidden",
           }}>
           <div
             style={{
@@ -132,25 +158,128 @@ function LapCuc(props) {
               top: 0,
             }}></div>
           <div
+            ref={refPinch}
             style={{
-              width: "80%",
+              width: "100%",
               display: isImage ? "flex" : "none",
               justifyContent: "center",
               alignItems: "center",
               background: "white",
               height: "100%",
               position: "relative",
+              transform: `scale(${crop.scale})`,
+              top: crop.y,
+              left: crop.x,
+              rotate: `${crop.rotate}deg`,
             }}>
             <img
               id="avatar"
               src=""
-              alt="avatar"
-              style={{ display: isImage ? "none" : "none" }}
+              alt=""
+              style={{
+                display: isImage ? "none" : "none",
+                position: "absolute",
+              }}
             />
-            <Konvas initImage={initImage} />
+            <Konvas
+              initImage={initImage}
+              setDegRotate={setDegRotate}
+              selectShape={selectShape}
+              selectedId={selectedId}
+            />
           </div>
         </div>
+        {/* tools Right */}
+        {isImage && (
+          <div
+            className="d-flex flex-row justify-content-between align-items-end position-absolute "
+            style={{ padding: "10px 20px", bottom: "20%", right: 10 }}>
+            <div style={{}} className="d-flex flex-column align-items-center">
+              {crop.isRotate && (
+                <Slider
+                  min={0}
+                  max={360}
+                  step={1}
+                  className=" bg-white color-blue-200"
+                  value={crop.rotate}
+                  orientation={"vertical"}
+                  tooltip={false}
+                  onChange={(value) => {
+                    setCrop({ ...crop, rotate: value });
+                  }}
+                  // onChangeComplete={Function}
+                />
+              )}
+              <Button
+                onClick={() => {
+                  setCrop({ ...crop, isRotate: !crop.isRotate });
+                }}
+                style={{
+                  background: "white",
+                  borderRadius: 9999,
+                  padding: "10px 12px",
+                  border: "0px",
+                  marginBottom: 12,
+                }}>
+                <Image
+                  src="/la-kinh/icon-9.png"
+                  style={{
+                    width: 20,
+                    height: 20,
+                  }}></Image>
+              </Button>
+              <Button
+                style={{
+                  background: "white",
+                  borderRadius: 9999,
+                  padding: "10px 12px",
+                  border: "0px",
+                  marginBottom: 12,
+                }}>
+                <Image
+                  src="/la-kinh/icon-3.png"
+                  style={{
+                    width: 20,
+                    height: 20,
+                  }}></Image>
+              </Button>
+              <Button
+                style={{
+                  background: "white",
+                  borderRadius: 9999,
+                  padding: "10px 12px",
 
+                  border: "0px",
+                }}>
+                <Image
+                  src="/la-kinh/icon-4.png"
+                  style={{
+                    width: 20,
+                    height: 20,
+                  }}></Image>
+              </Button>
+            </div>
+          </div>
+        )}
+        {/* degree */}
+        {isImage && (
+          <div
+            style={{ width: "100%", position: "absolute", bottom: "11%" }}
+            className="d-flex flex-column justify-content-center align-items-center">
+            <div className="text-white">
+              {getDirectionPhongThuyName(degRotate)}
+            </div>
+            <div
+              style={{
+                backgroundColor: "white",
+                padding: "5px 20px ",
+                borderRadius: 12,
+              }}>
+              {degRotate}
+              <span>&deg;</span>
+            </div>
+          </div>
+        )}
         {/* navigatorBottom */}
         <div
           className="d-flex flex-row justify-content-center position-absolute bottom-2"
@@ -158,37 +287,38 @@ function LapCuc(props) {
             width: "100%",
           }}>
           <div style={{}} className="d-flex flex-row align-items-center"></div>
-          {routingNavigateBottom.map((item) => {
-            return (
-              <div
-                onClick={item.onClick}
-                style={{
-                  background: "transparent",
-                  border: "0px",
-                }}
-                className="d-flex flex-column align-items-center">
-                <Image
-                  src={`/home/icon-round.png`}
-                  style={{ width: 50, height: 50, top: -10 }}
-                  className="position-absolute"
-                />
-                <Image
-                  src={`/la-kinh/${item.icon}.png`}
-                  style={{ width: 25, height: 25 }}
-                />
-                <p
-                  className="mx-4"
+          {routingNavigateBottom.map((item, index) => {
+            if (index < 2)
+              return (
+                <div
+                  onClick={item.onClick}
                   style={{
-                    marginTop: 8,
-                    fontSize: 13,
-                    // margin: 0,
-                    // marginTop: 8,
-                    color: "white",
-                  }}>
-                  {item.title}
-                </p>
-              </div>
-            );
+                    background: "transparent",
+                    border: "0px",
+                  }}
+                  className="d-flex flex-column align-items-center">
+                  <Image
+                    src={`/home/icon-round.png`}
+                    style={{ width: 50, height: 50, top: -10 }}
+                    className="position-absolute"
+                  />
+                  <Image
+                    src={`/la-kinh/${item.icon}.png`}
+                    style={{ width: 25, height: 25 }}
+                  />
+                  <p
+                    className="mx-4"
+                    style={{
+                      marginTop: 8,
+                      fontSize: 13,
+                      // margin: 0,
+                      // marginTop: 8,
+                      color: "white",
+                    }}>
+                    {item.title}
+                  </p>
+                </div>
+              );
           })}
         </div>
       </div>
@@ -226,7 +356,13 @@ const ButtonLapCuc = ({ title, setIsImage, isImage, imagePreview }) => {
     </div>
   );
 };
-const Rectangle = ({ shapeProps, isSelected, onSelect, onChange }) => {
+const Rectangle = ({
+  shapeProps,
+  isSelected,
+  onSelect,
+  onChange,
+  setDegRotate,
+}) => {
   const shapeRef = React.useRef();
   const trRef = React.useRef();
   const [image] = useImage("/la-ban-ve-tinh/mac-dinh.png");
@@ -255,9 +391,7 @@ const Rectangle = ({ shapeProps, isSelected, onSelect, onChange }) => {
             y: e.target.y(),
           });
         }}
-        style={{
-          background: "red",
-        }}
+        // rotation={12}
         onTransformEnd={(e) => {
           // transformer is changing scale of the node
           // and NOT its width or height
@@ -292,6 +426,18 @@ const Rectangle = ({ shapeProps, isSelected, onSelect, onChange }) => {
             "bottom-right",
           ]}
           boundBoxFunc={(oldBox, newBox) => {
+            if (((newBox.rotation / Math.PI) * 180) % 360 >= 0) {
+              setDegRotate(
+                (((newBox.rotation / Math.PI) * 180) % 360).toFixed(1)
+              );
+            } else {
+              setDegRotate(
+                (
+                  360 - Math.abs(((newBox.rotation / Math.PI) * 180) % 360)
+                ).toFixed(1)
+              );
+            }
+
             // limit resize
             if (newBox.width < 5 || newBox.height < 5) {
               return oldBox;
@@ -304,52 +450,8 @@ const Rectangle = ({ shapeProps, isSelected, onSelect, onChange }) => {
   );
 };
 
-function update(activeAnchor, index) {
-  var group = activeAnchor.getParent();
-  console.log(group.children[index], "activeAnchor");
-
-  var topLeft = group.get(".topLeft");
-  console.log(topLeft);
-  // var topRight = group.get(".topRight")[0];
-  // var bottomRight = group.get(".bottomRight")[0];
-  // var bottomLeft = group.get(".bottomLeft")[0];
-  // var image = group.get("Image")[0];
-
-  // var anchorX = activeAnchor.getX();
-  // var anchorY = activeAnchor.getY();
-
-  // // update anchor positions
-  // switch (activeAnchor.getName()) {
-  //   case "topLeft":
-  //     topRight.setY(anchorY);
-  //     bottomLeft.setX(anchorX);
-  //     break;
-  //   case "topRight":
-  //     topLeft.setY(anchorY);
-  //     bottomRight.setX(anchorX);
-  //     break;
-  //   case "bottomRight":
-  //     bottomLeft.setY(anchorY);
-  //     topRight.setX(anchorX);
-  //     break;
-  //   case "bottomLeft":
-  //     bottomRight.setY(anchorY);
-  //     topLeft.setX(anchorX);
-  //     break;
-  // }
-
-  // image.position(topLeft.position());
-
-  // var width = topRight.getX() - topLeft.getX();
-  // var height = bottomLeft.getY() - topLeft.getY();
-  // if (width && height) {
-  //   image.width(width);
-  //   image.height(height);
-  // }
-}
-const Konvas = ({ initImage }) => {
+const Konvas = ({ initImage, setDegRotate, selectedId, selectShape }) => {
   const [rectangles, setRectangles] = React.useState(initImage);
-  const [selectedId, selectShape] = React.useState(null);
 
   const checkDeselect = (e) => {
     // deselect when clicked on empty area
@@ -361,7 +463,7 @@ const Konvas = ({ initImage }) => {
 
   return (
     <Stage
-      width={window.innerWidth * 0.8}
+      width={window.innerWidth}
       height={window.innerHeight * 0.75}
       onMouseDown={checkDeselect}
       onTouchStart={checkDeselect}>
@@ -372,13 +474,12 @@ const Konvas = ({ initImage }) => {
               <Rectangle
                 key={i}
                 shapeProps={rect}
-                // isSelected={rect.id === selectedId}
-                isSelected={true}
+                setDegRotate={setDegRotate}
+                isSelected={rect.id === selectedId}
                 onSelect={() => {
                   selectShape(rect.id);
                 }}
                 onChange={(newAttrs) => {
-                  console.log(newAttrs, "newAttrs");
                   const rects = rectangles.slice();
                   rects[i] = newAttrs;
                   setRectangles(rects);

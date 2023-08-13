@@ -429,37 +429,38 @@ function VeTinh(props) {
           zIndex: 2,
         }}>
         <div style={{}} className="d-flex flex-row align-items-center"></div>
-        {routingNavigateBottom.map((item) => {
-          return (
-            <div
-              onClick={item.onClick}
-              style={{
-                background: "transparent",
-                border: "0px",
-              }}
-              className="d-flex flex-column align-items-center">
-              <Image
-                src={`/home/icon-round.png`}
-                style={{ width: 50, height: 50, top: -10 }}
-                className="position-absolute"
-              />
-              <Image
-                src={`/la-kinh/${item.icon}.png`}
-                style={{ width: 25, height: 25 }}
-              />
-              <p
-                className="mx-4"
+        {routingNavigateBottom.map((item, index) => {
+          if (index !== 1)
+            return (
+              <div
+                onClick={item.onClick}
                 style={{
-                  marginTop: 8,
-                  fontSize: 13,
-                  // margin: 0,
-                  // marginTop: 8,
-                  color: "white",
-                }}>
-                {item.title}
-              </p>
-            </div>
-          );
+                  background: "transparent",
+                  border: "0px",
+                }}
+                className="d-flex flex-column align-items-center">
+                <Image
+                  src={`/home/icon-round.png`}
+                  style={{ width: 50, height: 50, top: -10 }}
+                  className="position-absolute"
+                />
+                <Image
+                  src={`/la-kinh/${item.icon}.png`}
+                  style={{ width: 25, height: 25 }}
+                />
+                <p
+                  className="mx-4"
+                  style={{
+                    marginTop: 8,
+                    fontSize: 13,
+                    // margin: 0,
+                    // marginTop: 8,
+                    color: "white",
+                  }}>
+                  {item.title}
+                </p>
+              </div>
+            );
         })}
       </div>
       <div
