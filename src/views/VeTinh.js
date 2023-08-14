@@ -15,7 +15,8 @@ import {
   withScriptjs,
 } from "react-google-maps";
 import "./example.scss";
-
+import html2canvas from "html2canvas";
+import IconTint from "react-icon-tint";
 let magnetometer = null;
 let accelerometer = null;
 
@@ -95,15 +96,28 @@ function VeTinh(props) {
     }
   }
 
-  const download = (image, { name = "img", extension = "jpg" } = {}) => {
-    const a = document.createElement("a");
-    a.href = image;
-    a.download = createFileName(extension, name);
-    a.click();
-  };
+  const downloadScreenshot = () => {
+    // takeScreenshot(refDownload.current).then(download);
 
-  const downloadScreenshot = () =>
-    takeScreenshot(refDownload.current).then(download);
+    // html2canvas(document.getElementById("2")).then((canvas) => {
+    //   document.body.appendChild(canvas);
+    // });
+    html2canvas(document.getElementById("application"), {
+      proxy: "server.js",
+      useCORS: true,
+      onrendered: function (canvas) {
+        document.body.appendChild(canvas);
+      },
+    }).then((canvas) => {
+      console.log("123", canvas);
+      setTimeout(() => {
+        let a = document.createElement("a");
+        a.download = "ss.png";
+        a.href = canvas.toDataURL("image/png");
+        a.click();
+      }, 1000);
+    });
+  };
   useEffect(() => {}, []);
   // initAutocomplete();
 
@@ -135,7 +149,6 @@ function VeTinh(props) {
         placeholder="asd"
         type={"text"}
         style={{ position: "absolute", top: 0, left: 0, zIndex: 3 }}></input> */}
-      <div id="details"></div>
       {/* header */}
       {/* <StyledMapWithAnInfoBox /> */}
       {/* <div ref={refDownload}> */}
@@ -144,11 +157,13 @@ function VeTinh(props) {
       {/* la ban */}
       {visibleTools.visbleRotate && (
         <div
+          id="ádasdasd"
           style={{
             position: "absolute",
             top: "45%",
             left: "50%",
             zIndex: 4,
+            width: window.innerWidth,
             msTransform: "translate(-50%, -50%)",
             transform: "translate(-50%, -50%)",
             pointerEvents: isLineRotate ? "none" : "all",
@@ -158,24 +173,31 @@ function VeTinh(props) {
             style={{
               fontSize: 72,
               // background: "red",
-              WebkitBackgroundClip: "text",
-              WebkitTextFillColor: "transparent",
+              // WebkitBackgroundClip: "text",
+              // WebkitTextFillColor: "transparent",
               // background: "linear-gradient(45deg,transparent,orange)",
-              WebkitMask: "url(/lap-cuc/mac-dinh.png) center/contain no-repeat",
-              background: dataTools.pickColor,
+              // WebkitMask: "url(/lap-cuc/mac-dinh.png) center/contain no-repeat",
+              // background: dataTools.pickColor,
+              width: window.innerWidth,
               rotate: degPosLaKinh + "deg",
+              height: window.innerWidth,
+            }}>
+            <IconTint
+              src="/lap-cuc/mac-dinh-2.png"
+              color={dataTools.pickColor}
+              maxWidth={window.innerWidth}
+              maxHeight={window.innerWidth}
+            />
+          </div>
+
+          {/* <Image
+            src="/lap-cuc/mac-dinh.png"
+            style={{
               width: window.innerWidth,
               height: "100%",
-            }}>
-            <Image
-              src="/lap-cuc/mac-dinh.png"
-              style={{
-                width: window.innerWidth,
-                height: "100%",
-                maxWidth: window.innerWidth,
-                mixBlendMode: "screen",
-              }}></Image>
-          </div>
+              maxWidth: window.innerWidth,
+              mixBlendMode: "screen",
+            }}></Image> */}
         </div>
       )}
       {/* line  */}
@@ -463,6 +485,7 @@ function VeTinh(props) {
             );
         })}
       </div>
+      {/* pickColor */}
       <div
         style={{
           position: "absolute",
@@ -504,13 +527,14 @@ const MyMapComponent = compose(
       "https://maps.googleapis.com/maps/api/js?key=AIzaSyB2iaUASOUYEZOaME6b3d_-0XL5BUHhEqg&v=3.exp&libraries=geometry,drawing,places&callback",
 
     loadingElement: <div style={{ height: `100%` }} />,
-    containerElement: <div style={{ height: `100%` }} />,
+    containerElement: <div style={{ height: `100%` }} id="2" />,
     mapElement: <div style={{ height: `100%` }} />,
   }),
   withScriptjs,
   withGoogleMap
 )((props) => (
   <GoogleMap
+    id="asdasdasd"
     defaultZoom={15}
     defaultCenter={{ lat: 10.5, lng: 106.4 }}></GoogleMap>
 ));

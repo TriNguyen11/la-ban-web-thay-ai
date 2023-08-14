@@ -18,7 +18,14 @@ import useImage from "use-image";
 import Konva from "konva";
 import Slider from "react-rangeslider";
 import "react-rangeslider/lib/index.css";
-let magnetometer = null;
+import html2canvas from "html2canvas";
+const INIT_IMAGE = {
+  x: 10,
+  y: 10,
+  width: window.innerWidth / 1.2,
+  height: window.innerWidth / 1.2,
+  id: "rect1",
+};
 let accelerometer = null;
 
 function LapCuc(props) {
@@ -32,15 +39,7 @@ function LapCuc(props) {
     isRotate: false,
   });
   const [selectedId, selectShape] = React.useState(null);
-  const [initImage, setInitImage] = useState([
-    {
-      x: 10,
-      y: 10,
-      width: window.innerWidth / 1.2,
-      height: window.innerWidth / 1.2,
-      id: "rect1",
-    },
-  ]);
+  const [initImage, setInitImage] = useState([INIT_IMAGE]);
   // console.log(selectedId, "selectedId");
   const refPinch = React.useRef();
   useGesture(
@@ -66,20 +65,58 @@ function LapCuc(props) {
     const blobURL = URL.createObjectURL(blob);
     avatar.style.display = "block";
     avatar.style.opacity = "1";
-    avatar.style.objectFit = "contain";
     avatar.src = blobURL;
     avatar.onload = () => {
       avatar.style.width = "100%";
-      avatar.style.height = "100%";
-      // setAnchorImagePreview([
-      //   { width: 0, height: 0 },
-      //   { width: 0, height: avatar.height },
-      //   { width: avatar.width, height: avatar.height },
-      //   { width: avatar.width, height: 0 },
-      // ]);
     };
+    setInitImage([INIT_IMAGE]);
     setIsImage(true);
   }
+
+  const downloadScreenshot = () => {
+    html2canvas(document.getElementById("application"), {
+      proxy: "server.js",
+      useCORS: true,
+      onrendered: function (canvas) {
+        document.body.appendChild(canvas);
+      },
+    }).then((canvas) => {
+      let a = document.createElement("a");
+      a.download = "ss.png";
+      a.href = canvas.toDataURL("image/png");
+      a.click();
+    });
+  };
+  const shareScreenshot = async () => {
+    const canvas = await html2canvas(document.getElementById("application"), {
+      proxy: "server.js",
+      useCORS: true,
+      onrendered: function (canvas) {
+        document.body.appendChild(canvas);
+      },
+    });
+    canvas.toBlob(async (blob) => {
+      // Even if you want to share just one file you need to
+      // send them as an array of files.
+      const files = [new File([blob], "image.png", { type: blob.type })];
+      const shareData = {
+        text: "Some text",
+        title: "Some title",
+        files,
+      };
+      if (navigator.canShare(shareData)) {
+        try {
+          await navigator.share(shareData);
+        } catch (err) {
+          if (err.name !== "AbortError") {
+            console.error(err.name, err.message);
+          }
+        }
+      } else {
+        console.warn("Sharing not supported", shareData);
+      }
+    });
+  };
   return (
     <>
       <Image
@@ -89,7 +126,7 @@ function LapCuc(props) {
           // height: "85vh",
           bottom: 0,
           position: "absolute",
-          zIndex: -1,
+          zIndex: 1,
         }}></Image>
       <Image
         src="/home/background.png"
@@ -128,7 +165,7 @@ function LapCuc(props) {
           </div>
         ) : (
           <div
-            style={{ position: "absolute", top: 20, left: 20 }}
+            style={{ position: "absolute", top: 20, left: 20, zIndex: 10 }}
             onClick={() => {
               setIsImage(false);
             }}>
@@ -153,7 +190,7 @@ function LapCuc(props) {
               width: "100vw",
               height: "100vh",
               position: "absolute",
-              zIndex: -2,
+              zIndex: 0,
               background: "black",
               top: 0,
             }}></div>
@@ -210,6 +247,7 @@ function LapCuc(props) {
                   // onChangeComplete={Function}
                 />
               )}
+              {/* rotate */}
               <Button
                 onClick={() => {
                   setCrop({ ...crop, isRotate: !crop.isRotate });
@@ -228,7 +266,11 @@ function LapCuc(props) {
                     height: 20,
                   }}></Image>
               </Button>
+              {/* screen shot */}
               <Button
+                onClick={() => {
+                  downloadScreenshot();
+                }}
                 style={{
                   background: "white",
                   borderRadius: 9999,
@@ -243,7 +285,11 @@ function LapCuc(props) {
                     height: 20,
                   }}></Image>
               </Button>
+              {/* share */}
               <Button
+                onClick={() => {
+                  shareScreenshot();
+                }}
                 style={{
                   background: "white",
                   borderRadius: 9999,
@@ -264,7 +310,12 @@ function LapCuc(props) {
         {/* degree */}
         {isImage && (
           <div
-            style={{ width: "100%", position: "absolute", bottom: "11%" }}
+            style={{
+              width: "100%",
+              position: "absolute",
+              bottom: "11%",
+              zIndex: 2,
+            }}
             className="d-flex flex-column justify-content-center align-items-center">
             <div className="text-white">
               {getDirectionPhongThuyName(degRotate)}
@@ -285,6 +336,7 @@ function LapCuc(props) {
           className="d-flex flex-row justify-content-center position-absolute bottom-2"
           style={{
             width: "100%",
+            zIndex: 2,
           }}>
           <div style={{}} className="d-flex flex-row align-items-center"></div>
           {routingNavigateBottom.map((item, index) => {

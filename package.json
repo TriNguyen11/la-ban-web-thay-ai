@@ -39,6 +39,7 @@
     "react-dom": "18.2.0",
     "react-google-maps": "^9.4.5",
     "react-i18next": "^12.3.1",
+    "react-icon-tint": "^2.4.2",
     "react-konva": "^18.2.10",
     "react-lazyload": "^3.2.0",
     "react-rangeslider": "^2.2.0",
