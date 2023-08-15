@@ -1,8 +1,7 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { Button, Image, Modal } from "react-bootstrap";
 import { useGesture } from "react-use-gesture";
 import * as pico from "@gripeless/pico";
-import { Components, globalState, Navigation, routes } from "@floorplan/App";
 
 import { routingNavigateBottom } from "./Constanst";
 import todos from "./todos";
@@ -34,6 +33,7 @@ function Camera(props) {
   };
 
   const camON = () => {
+    console.log("123123132");
     let vid = document.getElementById("vid");
     if (navigator.mediaDevices.getUserMedia !== null) {
       var options = {
@@ -165,9 +165,7 @@ function Camera(props) {
       }
     });
   };
-  useEffect(() => {
-    camON();
-  }, []);
+
   React.useEffect(() => {
     if (!lock) {
       window.addEventListener(
@@ -199,7 +197,22 @@ function Camera(props) {
           position: "absolute",
           zIndex: 2,
         }}></Image>
-
+      {!isPermission && (
+        <div
+          onClick={(e) => {
+            camON();
+            console.log("123123");
+            setIsPermission(true);
+          }}
+          style={{
+            position: "fixed",
+            height: "100vh",
+            width: "100vw",
+            background: "red",
+            top: 0,
+            zIndex: 10,
+          }}></div>
+      )}
       <div
         style={{ position: "absolute", top: 20, left: 20, zIndex: 10 }}
         onClick={() => {
