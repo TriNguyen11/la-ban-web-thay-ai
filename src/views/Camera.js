@@ -1,5 +1,5 @@
 import React from "react";
-import { Button, Image, Modal } from "react-bootstrap";
+import { Button, Image, Modal, Offcanvas } from "react-bootstrap";
 import { useGesture } from "react-use-gesture";
 import * as pico from "@gripeless/pico";
 import { Navigation, routes } from "@floorplan/App";
@@ -21,6 +21,10 @@ function Camera(props) {
   const [lock, setLock] = React.useState(false);
   const [angle, setAngle] = React.useState(0);
   const [image, setImage] = React.useState();
+  const [changeCompass, setChangeCompass] = React.useState({
+    visible: false,
+    compass: "/la-ban/24-son-huong.png",
+  });
   // const [docanbang,setDoCanBang] = React.useState({x: 0,y:0,z:0})
   const [compassPicker, setCompassPicker] = React.useState([]);
   const capOff = () => {
@@ -198,6 +202,29 @@ function Camera(props) {
           position: "absolute",
           zIndex: 2,
         }}></Image>
+      <Offcanvas
+        show={changeCompass.visible}
+        onHide={() => {
+          setChangeCompass({ ...changeCompass, visible: false });
+        }}>
+        <Offcanvas.Header closeButton>
+          <Offcanvas.Title></Offcanvas.Title>
+        </Offcanvas.Header>
+        <Offcanvas.Body>
+          {["/la-ban/24-son-huong.png", "/la-ban/60-hoa-giap.png"].map(
+            (item, index) => {
+              return (
+                <Image
+                  onClick={() => {
+                    setChangeCompass({ visible: false, compass: item });
+                  }}
+                  style={{ padding: 10 }}
+                  src={item}></Image>
+              );
+            }
+          )}
+        </Offcanvas.Body>
+      </Offcanvas>
       {!isPermission && (
         <div
           onClick={(e) => {
@@ -273,7 +300,7 @@ function Camera(props) {
                 ).innerText = `lock is ${lock}`;
               }}>
               <Image
-                src={"/la-ban/24-son-huong.png"}
+                src={changeCompass.compass}
                 // src={"../assets/la-ban/60-hoa-giap.png"}
                 style={{
                   width: 30,
@@ -323,7 +350,11 @@ function Camera(props) {
                 right: 10,
               }}></i>
           </Button>
+          {/* change compass */}
           <Button
+            onClick={() => {
+              setChangeCompass({ ...changeCompass, visible: true });
+            }}
             style={{
               background: "white",
               borderRadius: 9999,
@@ -410,7 +441,7 @@ function Camera(props) {
             <img
               draggable={false}
               alt=""
-              src={"/la-ban/24-son-huong.png"}
+              src={changeCompass.compass}
               width="300rem"
               ref={imageRef}
               style={{

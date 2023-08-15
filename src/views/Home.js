@@ -6,6 +6,7 @@ import { useGesture } from "react-use-gesture";
 
 import html2canvas from "html2canvas";
 import { routingNavigateBottom } from "./Constanst";
+import Offcanvas from "react-bootstrap/Offcanvas";
 import todos from "./todos";
 
 let magnetometer = null;
@@ -19,6 +20,10 @@ function CreateNewProject(props) {
     React.useState(false);
   const [isPermission, setIsPermission] = React.useState(false);
   const [lock, setLock] = React.useState(false);
+  const [changeCompass, setChangeCompass] = React.useState({
+    visible: false,
+    compass: "/la-ban/24-son-huong.png",
+  });
   const [angle, setAngle] = React.useState(0);
   const [image, setImage] = React.useState();
   // const [docanbang,setDoCanBang] = React.useState({x: 0,y:0,z:0})
@@ -184,6 +189,29 @@ function CreateNewProject(props) {
           position: "absolute",
           zIndex: -2,
         }}></Image>
+      <Offcanvas
+        show={changeCompass.visible}
+        onHide={() => {
+          setChangeCompass({ ...changeCompass, visible: false });
+        }}>
+        <Offcanvas.Header closeButton>
+          <Offcanvas.Title></Offcanvas.Title>
+        </Offcanvas.Header>
+        <Offcanvas.Body>
+          {["/la-ban/24-son-huong.png", "/la-ban/60-hoa-giap.png"].map(
+            (item, index) => {
+              return (
+                <Image
+                  onClick={() => {
+                    setChangeCompass({ visible: false, compass: item });
+                  }}
+                  style={{ padding: 10 }}
+                  src={item}></Image>
+              );
+            }
+          )}
+        </Offcanvas.Body>
+      </Offcanvas>
       <img
         id="ImageDownload"
         alt="data"
@@ -236,8 +264,7 @@ function CreateNewProject(props) {
                 ).innerText = `lock is ${lock}`;
               }}>
               <Image
-                src={"/la-ban/24-son-huong.png"}
-                // src={"../assets/la-ban/60-hoa-giap.png"}
+                src={changeCompass.compass}
                 style={{
                   width: 30,
                   height: 30,
@@ -288,7 +315,11 @@ function CreateNewProject(props) {
                 right: 10,
               }}></i>
           </Button>
+          {/* change compass */}
           <Button
+            onClick={() => {
+              setChangeCompass({ ...changeCompass, visible: true });
+            }}
             style={{
               background: "white",
               borderRadius: 9999,
@@ -322,7 +353,7 @@ function CreateNewProject(props) {
             <img
               draggable={false}
               alt=""
-              src={"/la-ban/24-son-huong.png"}
+              src={changeCompass.compass}
               width="300rem"
               ref={imageRef}
               style={{
