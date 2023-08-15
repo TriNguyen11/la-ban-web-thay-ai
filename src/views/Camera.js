@@ -228,9 +228,9 @@ function Camera(props) {
       {!isPermission && (
         <div
           onClick={(e) => {
-            camON();
-            console.log("123123");
             setIsPermission(true);
+            camON();
+            // console.log("123123");
           }}
           style={{
             position: "fixed",
