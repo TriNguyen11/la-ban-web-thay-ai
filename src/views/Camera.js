@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Button, Image, Modal } from "react-bootstrap";
 import { useGesture } from "react-use-gesture";
 import * as pico from "@gripeless/pico";
@@ -165,8 +165,9 @@ function Camera(props) {
       }
     });
   };
-  camON();
-
+  useEffect(() => {
+    camON();
+  }, []);
   React.useEffect(() => {
     if (!lock) {
       window.addEventListener(
