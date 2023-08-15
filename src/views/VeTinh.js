@@ -9,6 +9,8 @@ import IconTint from "react-icon-tint";
 import { compose, withProps } from "recompose";
 import { routingNavigateBottom } from "./Constanst";
 import "./example.scss";
+import * as pico from "@gripeless/pico";
+
 let magnetometer = null;
 let accelerometer = null;
 

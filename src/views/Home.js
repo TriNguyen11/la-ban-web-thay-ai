@@ -1,6 +1,7 @@
 import React from "react";
 import { Button, Image, Modal } from "react-bootstrap";
 import { useGesture } from "react-use-gesture";
+import * as pico from "@gripeless/pico";
 
 import { routingNavigateBottom } from "./Constanst";
 import todos from "./todos";
