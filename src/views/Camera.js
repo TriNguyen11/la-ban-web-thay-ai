@@ -2,6 +2,7 @@ import React from "react";
 import { Button, Image, Modal } from "react-bootstrap";
 import { useGesture } from "react-use-gesture";
 import * as pico from "@gripeless/pico";
+import { Navigation, routes } from "@floorplan/App";
 
 import { routingNavigateBottom } from "./Constanst";
 import todos from "./todos";
@@ -210,7 +211,7 @@ function Camera(props) {
             width: "100vw",
             background: "red",
             top: 0,
-            zIndex: 10,
+            zIndex: 9,
           }}></div>
       )}
       <div
