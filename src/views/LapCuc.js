@@ -22,12 +22,12 @@ import html2canvas from "html2canvas";
 const INIT_IMAGE = {
   x: 10,
   y: 10,
-  width: window.innerWidth / 1.2,
-  height: window.innerWidth / 1.2,
+  width: window.innerWidth / 1,
+  height: window.innerWidth / 1,
   id: "rect1",
 };
 let accelerometer = null;
-
+import * as pico from "@gripeless/pico";
 function LapCuc(props) {
   const [isImage, setIsImage] = useState(false);
   const [degRotate, setDegRotate] = useState(0);
@@ -40,6 +40,16 @@ function LapCuc(props) {
   });
   const [selectedId, selectShape] = React.useState(null);
   const [initImage, setInitImage] = useState([INIT_IMAGE]);
+  const [image, setImage] = React.useState();
+  const takeImage = async () => {
+    let res;
+    await (async () => {
+      res = await pico.dataURL(window);
+      console.log(res);
+      setImage(res.value);
+    })();
+    return res.value;
+  };
   // console.log(selectedId, "selectedId");
   const refPinch = React.useRef();
   useGesture(
@@ -73,8 +83,11 @@ function LapCuc(props) {
     setIsImage(true);
   }
 
-  const downloadScreenshot = () => {
-    html2canvas(document.getElementById("application"), {
+  const downloadScreenshot = async () => {
+    await takeImage();
+    await new Promise((resolve) => setTimeout(resolve, 200));
+    // html2canvas(document.getElementById("application"), {
+    html2canvas(document.getElementById("ImageDownload"), {
       proxy: "server.js",
       useCORS: true,
       onrendered: function (canvas) {
@@ -82,13 +95,15 @@ function LapCuc(props) {
       },
     }).then((canvas) => {
       let a = document.createElement("a");
-      a.download = "ss.png";
+      a.download = "screenshot.png";
       a.href = canvas.toDataURL("image/png");
       a.click();
     });
   };
   const shareScreenshot = async () => {
-    const canvas = await html2canvas(document.getElementById("application"), {
+    await takeImage();
+    await new Promise((resolve) => setTimeout(resolve, 200));
+    const canvas = await html2canvas(document.getElementById("ImageDownload"), {
       proxy: "server.js",
       useCORS: true,
       onrendered: function (canvas) {
@@ -137,7 +152,18 @@ function LapCuc(props) {
           zIndex: -2,
         }}></Image>
       {/* main */}
-
+      <img
+        id="ImageDownload"
+        alt="data"
+        src={image}
+        style={{
+          position: "absolute",
+          opacity: 1,
+          zIndex: -3,
+          top: 0,
+          left: -4,
+        }}
+      />
       <div
         style={{ height: "75%", marginTop: "15%" }}
         className="d-flex flex-column align-items-center justify-content-center">
@@ -176,6 +202,7 @@ function LapCuc(props) {
         )}
         {/* image render */}
         <div
+          ref={refPinch}
           id="container"
           style={{
             width: "100%",
@@ -186,6 +213,9 @@ function LapCuc(props) {
             overflow: "hidden",
           }}>
           <div
+            onClick={() => {
+              selectShape(null);
+            }}
             style={{
               width: "100vw",
               height: "100vh",
@@ -193,9 +223,9 @@ function LapCuc(props) {
               zIndex: 0,
               background: "black",
               top: 0,
+              touchAction: "none",
             }}></div>
           <div
-            ref={refPinch}
             style={{
               width: "100%",
               display: isImage ? "flex" : "none",
@@ -208,6 +238,7 @@ function LapCuc(props) {
               top: crop.y,
               left: crop.x,
               rotate: `${crop.rotate}deg`,
+              touchAction: "none",
             }}>
             <img
               id="avatar"
@@ -268,9 +299,7 @@ function LapCuc(props) {
               </Button>
               {/* screen shot */}
               <Button
-                onClick={() => {
-                  downloadScreenshot();
-                }}
+                onClick={downloadScreenshot}
                 style={{
                   background: "white",
                   borderRadius: 9999,
@@ -478,6 +507,7 @@ const Rectangle = ({
             "bottom-right",
           ]}
           boundBoxFunc={(oldBox, newBox) => {
+            console.log(newBox, "newBox");
             if (((newBox.rotation / Math.PI) * 180) % 360 >= 0) {
               setDegRotate(
                 (((newBox.rotation / Math.PI) * 180) % 360).toFixed(1)
