@@ -85,7 +85,7 @@ function LapCuc(props) {
 
   const downloadScreenshot = async () => {
     await takeImage();
-    await new Promise((resolve) => setTimeout(resolve, 1000));
+    await new Promise((resolve) => setTimeout(resolve, 2000));
     // html2canvas(document.getElementById("application"), {
     html2canvas(document.getElementById("ImageDownload"), {
       proxy: "server.js",
