@@ -2,6 +2,7 @@ import React from "react";
 import { Button, Image, Modal } from "react-bootstrap";
 import { useGesture } from "react-use-gesture";
 import * as pico from "@gripeless/pico";
+import { Components, globalState, Navigation, routes } from "@floorplan/App";
 
 import { routingNavigateBottom } from "./Constanst";
 import todos from "./todos";
@@ -42,6 +43,7 @@ function Camera(props) {
       navigator.getUserMedia(
         options,
         function (stream) {
+          console.log(stream, "stream");
           vid.srcObject = stream;
           localstream = stream;
           vid.play();
@@ -163,6 +165,7 @@ function Camera(props) {
       }
     });
   };
+  camON();
 
   React.useEffect(() => {
     if (!lock) {
@@ -193,28 +196,18 @@ function Camera(props) {
           // height: "85vh",
           bottom: 0,
           position: "absolute",
-          zIndex: -1,
+          zIndex: 2,
         }}></Image>
-      {!isPermission && (
-        <div
-          onClick={(e) => {
-            e.preventDefault();
-            if (
-              DeviceMotionEvent &&
-              typeof DeviceMotionEvent.requestPermission === "function"
-            ) {
-              DeviceMotionEvent.requestPermission();
-              camON();
-              setIsPermission(true);
-            }
-          }}
-          style={{
-            position: "fixed",
-            height: "100vh",
-            width: "100vw",
-            top: 0,
-          }}></div>
-      )}
+
+      <div
+        style={{ position: "absolute", top: 20, left: 20, zIndex: 10 }}
+        onClick={() => {
+          Navigation.navigate(routes.home.path);
+        }}>
+        <i
+          className="fa fa-chevron-left"
+          style={{ fontSize: 30, color: "white" }}></i>
+      </div>
       <img
         id="ImageDownload"
         alt="data"
@@ -230,9 +223,9 @@ function Camera(props) {
       {/* header */}
       <div
         className="d-flex flex-row justify-content-between align-items-start position-absolute"
-        style={{ padding: "10px 20px", width: "100%" }}>
+        style={{ padding: "10px 20px", width: "100%", zIndex: 4 }}>
         {/* left */}
-        <div></div>
+        <div className="opacity-0">_____</div>
         {/* middle */}
         <div className="d-flex flex-column align-items-center">
           <div className="d-flex flex-row align-items-center">
@@ -371,9 +364,11 @@ function Camera(props) {
 
       <video
         id="vid"
+        muted={true}
+        playsinline="true"
         height={window.innerHeight / 1.7}
         width={window.innerWidth}
-        style={{ zIndex: -3 }}
+        style={{ zIndex: -3, scale: 1.5, transform: "translateY(-5%)" }}
         autoPlay></video>
 
       {/* la ban */}
@@ -389,7 +384,7 @@ function Camera(props) {
             transform: "translateX(-25%) translateY(-15%)",
             overflow: "hidden",
             position: "absolute",
-            zIndex: -3,
+            zIndex: 1,
           }}>
           <div
             style={{
@@ -410,6 +405,17 @@ function Camera(props) {
                 position: "relative",
                 rotate: `${angle ? 360 - angle : 0}deg`,
                 transition: "0.1s linear",
+              }}
+            />
+            <div
+              style={{
+                width: 2,
+                height: "100%",
+                backgroundColor: "red",
+                position: "absolute",
+                top: 0,
+                left: "50%",
+                top: "0%",
               }}
             />
           </div>
@@ -460,7 +466,7 @@ function Camera(props) {
         style={{
           position: "absolute",
           bottom: "-10%",
-          zIndex: -3,
+          zIndex: 3,
           width: "200%",
         }}
         className="d-flex flex-row justify-content-center">
@@ -487,6 +493,7 @@ function Camera(props) {
         className="d-flex flex-row justify-content-center position-absolute bottom-2"
         style={{
           width: "100%",
+          zIndex: 3,
         }}>
         <div style={{}} className="d-flex flex-row align-items-center"></div>
         {routingNavigateBottom.map((item) => {
