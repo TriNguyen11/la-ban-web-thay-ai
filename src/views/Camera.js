@@ -371,15 +371,23 @@ function Camera(props) {
 
       <video
         id="vid"
-        height={window.innerHeight / 1.8}
+        height={window.innerHeight / 1.7}
         width={window.innerWidth}
+        style={{ zIndex: -3 }}
         autoPlay></video>
 
       {/* la ban */}
-      <div style={{}} className="d-flex flex-row justify-content-center">
+      <div
+        style={{
+          position: "absolute",
+          bottom: "-10%",
+          zIndex: -2,
+          width: "200%",
+        }}
+        className="d-flex flex-row justify-content-center">
         <div
           style={{
-            width: "90%",
+            width: "100%",
             height: "40%",
 
             overflow: "hidden",
@@ -403,6 +411,7 @@ function Camera(props) {
                 position: "relative",
                 rotate: `${angle ? 360 - angle : 0}deg`,
                 transition: "0.1s linear",
+                transform: "translateX(-25%) translateY(30%)",
               }}
             />
           </div>
@@ -417,7 +426,7 @@ function Camera(props) {
           width: "200%",
         }}
         className="d-flex flex-row justify-content-center">
-        <img
+        {/* <img
           draggable={false}
           alt=""
           src={"/la-ban/24-son-huong.png"}
@@ -432,7 +441,7 @@ function Camera(props) {
             objectFit: "cover",
             transform: "translateX(-25%) translateY(30%)",
           }}
-        />
+        /> */}
       </div>
 
       {/* navigatorBottom */}
