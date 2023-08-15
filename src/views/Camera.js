@@ -379,6 +379,44 @@ function Camera(props) {
       {/* la ban */}
       <div
         style={{
+          width: "200%",
+        }}
+        className="d-flex flex-row justify-content-center">
+        <div
+          style={{
+            width: window.innerWidth * 2,
+            height: "100%",
+            transform: "translateX(-25%) translateY(-15%)",
+            overflow: "hidden",
+            position: "absolute",
+            zIndex: -3,
+          }}>
+          <div
+            style={{
+              position: "relative",
+              left: crop.x,
+              top: crop.y,
+            }}>
+            <img
+              draggable={false}
+              alt=""
+              src={"/la-ban/24-son-huong.png"}
+              width="300rem"
+              ref={imageRef}
+              style={{
+                width: "100%",
+                height: "100%",
+                touchAction: "none",
+                position: "relative",
+                rotate: `${angle ? 360 - angle : 0}deg`,
+                transition: "0.1s linear",
+              }}
+            />
+          </div>
+        </div>
+      </div>
+      {/* <div
+        style={{
           position: "absolute",
           bottom: "-10%",
           zIndex: -2,
@@ -416,7 +454,7 @@ function Camera(props) {
             />
           </div>
         </div>
-      </div>
+      </div> */}
 
       <div
         style={{
