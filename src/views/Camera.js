@@ -60,6 +60,40 @@ function Camera(props) {
       );
     }
   };
+  const constraints = {
+    audio: false,
+    video: {
+      facingMode: "user",
+    },
+  };
+
+  function getVideo() {
+    let video = document.getElementById("vid");
+
+    navigator.mediaDevices
+      .getUserMedia(constraints)
+      .then((localMediaStream) => {
+        console.log(localMediaStream);
+
+        //  DEPRECIATION :
+        //       The following has been depreceated by major browsers as of Chrome and Firefox.
+        //       video.src = window.URL.createObjectURL(localMediaStream);
+        //       Please refer to these:
+        //       Deprecated  - https://developer.mozilla.org/en-US/docs/Web/API/URL/createObjectURL
+        //       Newer Syntax - https://developer.mozilla.org/en-US/docs/Web/API/HTMLMediaElement/srcObject
+        console.dir(video);
+        if ("srcObject" in video) {
+          video.srcObject = localMediaStream;
+        } else {
+          video.src = URL.createObjectURL(localMediaStream);
+        }
+        // video.src = window.URL.createObjectURL(localMediaStream);
+        video.play();
+      })
+      .catch((err) => {
+        console.error(`OH NO!!!!`, err);
+      });
+  }
   // let _angle = useSharedValue(0);
   // _angle.addListener(({value}) => setAngle(Math.round(value)));
   const areaListener = new AbortController();
@@ -228,8 +262,9 @@ function Camera(props) {
       {!isPermission && (
         <div
           onClick={(e) => {
+            // camON();
+            getVideo();
             setIsPermission(true);
-            camON();
             // console.log("123123");
           }}
           style={{
