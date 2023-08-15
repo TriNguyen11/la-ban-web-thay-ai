@@ -23,10 +23,6 @@ const App = () => {
   return typeof document !== "undefined" ? (
     <>
       <Head>
-        <meta
-          name="viewport"
-          content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0"
-        />
         <title>Web Dev Tutor</title>
         <script src="https://polyfill.io/v3/polyfill.min.js?features=default"></script>
         <script src="https://unpkg.com/konva@9.2.0/konva.min.js"></script>
