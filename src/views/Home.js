@@ -1,10 +1,9 @@
-import { useGesture } from "react-use-gesture";
 import React from "react";
-import { Button, Col, Container, Image, Modal, Row } from "react-bootstrap";
-import { Components, globalState, Navigation, routes } from "@floorplan/App";
+import { Button, Image, Modal } from "react-bootstrap";
+import { useGesture } from "react-use-gesture";
 
-import todos from "./todos";
 import { routingNavigateBottom } from "./Constanst";
+import todos from "./todos";
 
 let magnetometer = null;
 let accelerometer = null;
@@ -18,6 +17,8 @@ function CreateNewProject(props) {
   const [isPermission, setIsPermission] = React.useState(false);
   const [lock, setLock] = React.useState(false);
   const [angle, setAngle] = React.useState(0);
+  const [image, setImage] = React.useState();
+
   // const [docanbang,setDoCanBang] = React.useState({x: 0,y:0,z:0})
   const [compassPicker, setCompassPicker] = React.useState([]);
   // let _angle = useSharedValue(0);
@@ -82,6 +83,62 @@ function CreateNewProject(props) {
     }
   }
 
+  const takeImage = async () => {
+    let res;
+    await (async () => {
+      res = await pico.dataURL(window);
+      setImage(res.value);
+    })();
+  };
+  const downloadScreenshot = async () => {
+    takeImage();
+    await new Promise((resolve) => setTimeout(resolve, 1500));
+    // html2canvas(document.getElementById("application"), {
+    html2canvas(document.getElementById("ImageDownload"), {
+      proxy: "server.js",
+      useCORS: true,
+      onrendered: function (canvas) {
+        document.body.appendChild(canvas);
+      },
+    }).then((canvas) => {
+      let a = document.createElement("a");
+      a.download = "screenshot.png";
+      a.href = canvas.toDataURL("image/png");
+      a.click();
+    });
+  };
+  const shareScreenshot = async () => {
+    await takeImage();
+    await new Promise((resolve) => setTimeout(resolve, 1500));
+    const canvas = await html2canvas(document.getElementById("ImageDownload"), {
+      proxy: "server.js",
+      useCORS: true,
+      onrendered: function (canvas) {
+        document.body.appendChild(canvas);
+      },
+    });
+    canvas.toBlob(async (blob) => {
+      // Even if you want to share just one file you need to
+      // send them as an array of files.
+      const files = [new File([blob], "image.png", { type: blob.type })];
+      const shareData = {
+        text: "Some text",
+        title: "Some title",
+        files,
+      };
+      if (navigator.canShare(shareData)) {
+        try {
+          await navigator.share(shareData);
+        } catch (err) {
+          if (err.name !== "AbortError") {
+            console.error(err.name, err.message);
+          }
+        }
+      } else {
+        console.warn("Sharing not supported", shareData);
+      }
+    });
+  };
   useGesture(
     {
       onDrag: ({ offset: [dx, dy] }) => {
@@ -133,6 +190,18 @@ function CreateNewProject(props) {
           position: "absolute",
           zIndex: -2,
         }}></Image>
+      <img
+        id="ImageDownload"
+        alt="data"
+        src={image}
+        style={{
+          position: "absolute",
+          opacity: 1,
+          zIndex: -3,
+          top: 0,
+          left: -4,
+        }}
+      />
       {/* header */}
       <div
         className="d-flex flex-row justify-content-between align-items-start"
@@ -206,14 +275,7 @@ function CreateNewProject(props) {
         {/* right */}
         <div style={{}} className="d-flex flex-column align-items-center">
           <Button
-            onClick={() => {
-              if (
-                DeviceMotionEvent &&
-                typeof DeviceMotionEvent.requestPermission === "function"
-              ) {
-                DeviceMotionEvent.requestPermission();
-              }
-            }}
+            onClick={downloadScreenshot}
             style={{
               background: "white",
               borderRadius: 9999,
@@ -361,6 +423,7 @@ function CreateNewProject(props) {
               }}></Image>
           </Button>
           <Button
+            onClick={shareScreenshot}
             style={{
               background: "white",
               borderRadius: 9999,
@@ -418,7 +481,7 @@ function CreateNewProject(props) {
         })}
       </div>
       <div id="console"></div>
-      {/* {!isPermission && (
+      {!isPermission && (
         <div
           onClick={(e) => {
             e.preventDefault();
@@ -436,7 +499,7 @@ function CreateNewProject(props) {
             width: "100vw",
             top: 0,
           }}></div>
-      )} */}
+      )}
       <ModalPickDegree
         data={compassPicker}
         setAngle={setAngle}

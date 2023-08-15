@@ -1,24 +1,14 @@
+import React, { useState } from "react";
+import { Button, Image } from "react-bootstrap";
 import { useGesture } from "react-use-gesture";
-import React, { useEffect, useState } from "react";
-import { Button, Col, Container, Modal, Row, Image } from "react-bootstrap";
 
-import todos from "./todos";
-import { getDirectionPhongThuyName, routingNavigateBottom } from "./Constanst";
-import {
-  Stage,
-  Layer,
-  Rect,
-  Transformer,
-  Circle,
-  Group,
-  Text,
-  Image as Imagess,
-} from "react-konva";
-import useImage from "use-image";
-import Konva from "konva";
+import * as pico from "@gripeless/pico";
+import html2canvas from "html2canvas";
+import { Image as Imagess, Layer, Stage, Transformer } from "react-konva";
 import Slider from "react-rangeslider";
 import "react-rangeslider/lib/index.css";
-import html2canvas from "html2canvas";
+import useImage from "use-image";
+import { getDirectionPhongThuyName, routingNavigateBottom } from "./Constanst";
 const INIT_IMAGE = {
   x: 10,
   y: 10,
@@ -27,7 +17,6 @@ const INIT_IMAGE = {
   id: "rect1",
 };
 let accelerometer = null;
-import * as pico from "@gripeless/pico";
 function LapCuc(props) {
   const [isImage, setIsImage] = useState(false);
   const [degRotate, setDegRotate] = useState(0);
@@ -41,17 +30,64 @@ function LapCuc(props) {
   const [selectedId, selectShape] = React.useState(null);
   const [initImage, setInitImage] = useState([INIT_IMAGE]);
   const [image, setImage] = React.useState();
+  const refPinch = React.useRef();
+
   const takeImage = async () => {
     let res;
     await (async () => {
       res = await pico.dataURL(window);
-      console.log(res);
       setImage(res.value);
     })();
-    return res.value;
   };
-  // console.log(selectedId, "selectedId");
-  const refPinch = React.useRef();
+  const downloadScreenshot = async () => {
+    takeImage();
+    await new Promise((resolve) => setTimeout(resolve, 1500));
+    // html2canvas(document.getElementById("application"), {
+    html2canvas(document.getElementById("ImageDownload"), {
+      proxy: "server.js",
+      useCORS: true,
+      onrendered: function (canvas) {
+        document.body.appendChild(canvas);
+      },
+    }).then((canvas) => {
+      let a = document.createElement("a");
+      a.download = "screenshot.png";
+      a.href = canvas.toDataURL("image/png");
+      a.click();
+    });
+  };
+  const shareScreenshot = async () => {
+    await takeImage();
+    await new Promise((resolve) => setTimeout(resolve, 1500));
+    const canvas = await html2canvas(document.getElementById("ImageDownload"), {
+      proxy: "server.js",
+      useCORS: true,
+      onrendered: function (canvas) {
+        document.body.appendChild(canvas);
+      },
+    });
+    canvas.toBlob(async (blob) => {
+      // Even if you want to share just one file you need to
+      // send them as an array of files.
+      const files = [new File([blob], "image.png", { type: blob.type })];
+      const shareData = {
+        text: "Some text",
+        title: "Some title",
+        files,
+      };
+      if (navigator.canShare(shareData)) {
+        try {
+          await navigator.share(shareData);
+        } catch (err) {
+          if (err.name !== "AbortError") {
+            console.error(err.name, err.message);
+          }
+        }
+      } else {
+        console.warn("Sharing not supported", shareData);
+      }
+    });
+  };
   useGesture(
     {
       onPinch: ({ offset: [scaleImage] }) => {
@@ -83,55 +119,6 @@ function LapCuc(props) {
     setIsImage(true);
   }
 
-  const downloadScreenshot = async () => {
-    await takeImage();
-    await new Promise((resolve) => setTimeout(resolve, 2000));
-    // html2canvas(document.getElementById("application"), {
-    html2canvas(document.getElementById("ImageDownload"), {
-      proxy: "server.js",
-      useCORS: true,
-      onrendered: function (canvas) {
-        document.body.appendChild(canvas);
-      },
-    }).then((canvas) => {
-      let a = document.createElement("a");
-      a.download = "screenshot.png";
-      a.href = canvas.toDataURL("image/png");
-      a.click();
-    });
-  };
-  const shareScreenshot = async () => {
-    await takeImage();
-    await new Promise((resolve) => setTimeout(resolve, 200));
-    const canvas = await html2canvas(document.getElementById("ImageDownload"), {
-      proxy: "server.js",
-      useCORS: true,
-      onrendered: function (canvas) {
-        document.body.appendChild(canvas);
-      },
-    });
-    canvas.toBlob(async (blob) => {
-      // Even if you want to share just one file you need to
-      // send them as an array of files.
-      const files = [new File([blob], "image.png", { type: blob.type })];
-      const shareData = {
-        text: "Some text",
-        title: "Some title",
-        files,
-      };
-      if (navigator.canShare(shareData)) {
-        try {
-          await navigator.share(shareData);
-        } catch (err) {
-          if (err.name !== "AbortError") {
-            console.error(err.name, err.message);
-          }
-        }
-      } else {
-        console.warn("Sharing not supported", shareData);
-      }
-    });
-  };
   return (
     <>
       <Image
@@ -316,9 +303,7 @@ function LapCuc(props) {
               </Button>
               {/* share */}
               <Button
-                onClick={() => {
-                  shareScreenshot();
-                }}
+                onClick={shareScreenshot}
                 style={{
                   background: "white",
                   borderRadius: 9999,

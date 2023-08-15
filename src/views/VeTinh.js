@@ -1,22 +1,14 @@
 // import { useGesture } from "react-use-gesture";
-import React, { createRef, useEffect } from "react";
-import { Button, Col, Container, Image, Modal, Row } from "react-bootstrap";
-import { compose, withProps, withStateHandlers } from "recompose";
 import { useGesture } from "@use-gesture/react";
-import { ChromePicker } from "react-color";
-import * as htmlToImage from "html-to-image";
-import todos from "./todos";
-import { routingNavigateBottom } from "./Constanst";
-import { useScreenshot, createFileName } from "use-react-screenshot";
-import {
-  GoogleMap,
-  Marker,
-  withGoogleMap,
-  withScriptjs,
-} from "react-google-maps";
-import "./example.scss";
 import html2canvas from "html2canvas";
+import React, { createRef, useEffect } from "react";
+import { Button, Image } from "react-bootstrap";
+import { ChromePicker } from "react-color";
+import { GoogleMap, withGoogleMap, withScriptjs } from "react-google-maps";
 import IconTint from "react-icon-tint";
+import { compose, withProps } from "recompose";
+import { routingNavigateBottom } from "./Constanst";
+import "./example.scss";
 let magnetometer = null;
 let accelerometer = null;
 
@@ -25,10 +17,6 @@ function VeTinh(props) {
   const myUse = document.getElementById("myUse");
   const lineRef = React.useRef();
   const refDownload = createRef(null);
-  const [image, takeScreenshot] = useScreenshot({
-    type: "image/jpeg",
-    quality: 1.0,
-  });
 
   const [pos, setPos] = React.useState({ x: 0, y: 0 });
   const [posLaKinh, setPosLaKinh] = React.useState({ x: 0, y: 0 });
@@ -40,6 +28,8 @@ function VeTinh(props) {
     pickColor: false,
     visbleRotate: true,
   });
+  const [image, setImage] = React.useState();
+
   const [dataTools, setDataTools] = React.useState({
     pickColor: "#000000",
   });
@@ -96,26 +86,28 @@ function VeTinh(props) {
     }
   }
 
-  const downloadScreenshot = () => {
-    // takeScreenshot(refDownload.current).then(download);
-
-    // html2canvas(document.getElementById("2")).then((canvas) => {
-    //   document.body.appendChild(canvas);
-    // });
-    html2canvas(document.getElementById("application"), {
+  const takeImage = async () => {
+    let res;
+    await (async () => {
+      res = await pico.dataURL(window);
+      setImage(res.value);
+    })();
+  };
+  const downloadScreenshot = async () => {
+    takeImage();
+    await new Promise((resolve) => setTimeout(resolve, 1500));
+    // html2canvas(document.getElementById("application"), {
+    html2canvas(document.getElementById("ImageDownload"), {
       proxy: "server.js",
       useCORS: true,
       onrendered: function (canvas) {
         document.body.appendChild(canvas);
       },
     }).then((canvas) => {
-      console.log("123", canvas);
-      setTimeout(() => {
-        let a = document.createElement("a");
-        a.download = "ss.png";
-        a.href = canvas.toDataURL("image/png");
-        a.click();
-      }, 1000);
+      let a = document.createElement("a");
+      a.download = "screenshot.png";
+      a.href = canvas.toDataURL("image/png");
+      a.click();
     });
   };
   useEffect(() => {}, []);
@@ -144,6 +136,18 @@ function VeTinh(props) {
           position: "absolute",
           zIndex: 1,
         }}></Image>
+      <img
+        id="ImageDownload"
+        alt="data"
+        src={image}
+        style={{
+          position: "absolute",
+          opacity: 1,
+          zIndex: -3,
+          top: 0,
+          left: -4,
+        }}
+      />
       {/* <input
         id="autocomplete"
         placeholder="asd"
