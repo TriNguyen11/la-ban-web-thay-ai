@@ -63,13 +63,14 @@ function Camera(props) {
   const constraints = {
     audio: false,
     video: {
-      facingMode: "user",
+      facingMode: "environment",
     },
   };
 
-  function getVideo() {
+  async function getVideo() {
     let video = document.getElementById("vid");
-
+    let avas = await navigator.mediaDevices.enumerateDevices();
+    console.log(avas, "avas");
     navigator.mediaDevices
       .getUserMedia(constraints)
       .then((localMediaStream) => {
@@ -81,7 +82,7 @@ function Camera(props) {
         //       Please refer to these:
         //       Deprecated  - https://developer.mozilla.org/en-US/docs/Web/API/URL/createObjectURL
         //       Newer Syntax - https://developer.mozilla.org/en-US/docs/Web/API/HTMLMediaElement/srcObject
-        console.dir(video);
+
         if ("srcObject" in video) {
           video.srcObject = localMediaStream;
         } else {
@@ -271,7 +272,6 @@ function Camera(props) {
             position: "fixed",
             height: "100vh",
             width: "100vw",
-            background: "red",
             top: 0,
             zIndex: 9,
           }}></div>
