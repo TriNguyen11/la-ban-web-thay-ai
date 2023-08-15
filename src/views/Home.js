@@ -5,6 +5,7 @@ import * as pico from "@gripeless/pico";
 
 import { routingNavigateBottom } from "./Constanst";
 import todos from "./todos";
+import html2canvas from "html2canvas";
 
 let magnetometer = null;
 let accelerometer = null;
@@ -481,8 +482,8 @@ function CreateNewProject(props) {
           );
         })}
       </div>
-      <div id="console"></div>
-      {!isPermission && (
+      {/* <div id="console"></div> */}
+      {/* {!isPermission && (
         <div
           onClick={(e) => {
             e.preventDefault();
@@ -500,7 +501,7 @@ function CreateNewProject(props) {
             width: "100vw",
             top: 0,
           }}></div>
-      )}
+      )} */}
       <ModalPickDegree
         data={compassPicker}
         setAngle={setAngle}
