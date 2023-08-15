@@ -1,3 +1,4 @@
+import Camera from "@floorplan/views/Camera";
 import dynamic from "next/dynamic";
 import React from "react";
 
@@ -18,6 +19,13 @@ const routes = {
     // main: <div>asdasd</div>,
     main: <Home />,
   },
+  camera: {
+    path: "/camera",
+    name: "Vệ Tinh",
+    auth: true,
+    exact: true,
+    main: <Camera />,
+  },
   vetinh: {
     path: "/vetinh",
     name: "Vệ Tinh",
@@ -25,7 +33,6 @@ const routes = {
     exact: true,
     main: <VeTinh />,
   },
-
   lapcuc: {
     path: "/lapcuc",
     name: "Lập cực",

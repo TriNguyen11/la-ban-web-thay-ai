@@ -1,17 +1,16 @@
-import { Navigation, routes } from "@floorplan/App";
-import * as pico from "@gripeless/pico";
 import React from "react";
 import { Button, Image, Modal } from "react-bootstrap";
 import { useGesture } from "react-use-gesture";
+import * as pico from "@gripeless/pico";
 
-import html2canvas from "html2canvas";
 import { routingNavigateBottom } from "./Constanst";
 import todos from "./todos";
+import html2canvas from "html2canvas";
 
 let magnetometer = null;
 let accelerometer = null;
-
-function CreateNewProject(props) {
+let localstream;
+function Camera(props) {
   const docanbangRef = React.useRef();
   const imageRef = React.useRef();
   const [crop, setCrop] = React.useState({ x: 0, y: 0 });
@@ -23,6 +22,37 @@ function CreateNewProject(props) {
   const [image, setImage] = React.useState();
   // const [docanbang,setDoCanBang] = React.useState({x: 0,y:0,z:0})
   const [compassPicker, setCompassPicker] = React.useState([]);
+  const capOff = () => {
+    let vid = document?.getElementById("vid");
+    if (vid) {
+      vid.pause();
+      vid.src = "";
+    }
+    localstream?.getTracks()?.forEach((x) => x.stop());
+    console.log("all capture devices off");
+  };
+
+  const camON = () => {
+    let vid = document.getElementById("vid");
+    if (navigator.mediaDevices.getUserMedia !== null) {
+      var options = {
+        video: true,
+        audio: true,
+      };
+      navigator.getUserMedia(
+        options,
+        function (stream) {
+          vid.srcObject = stream;
+          localstream = stream;
+          vid.play();
+          console.log(stream, "streaming");
+        },
+        function (e) {
+          console.log("background error : " + e.name);
+        }
+      );
+    }
+  };
   // let _angle = useSharedValue(0);
   // _angle.addListener(({value}) => setAngle(Math.round(value)));
   const areaListener = new AbortController();
@@ -133,17 +163,6 @@ function CreateNewProject(props) {
       }
     });
   };
-  useGesture(
-    {
-      onDrag: ({ offset: [dx, dy] }) => {
-        setCrop((crop) => ({ ...crop, x: dx, y: dy }));
-      },
-    },
-    {
-      domTarget: imageRef,
-      eventOptions: { passive: false },
-    }
-  );
 
   React.useEffect(() => {
     if (!lock) {
@@ -176,14 +195,26 @@ function CreateNewProject(props) {
           position: "absolute",
           zIndex: -1,
         }}></Image>
-      <Image
-        src="/home/background.png"
-        style={{
-          width: "100vw",
-          height: "100vh",
-          position: "absolute",
-          zIndex: -2,
-        }}></Image>
+      {!isPermission && (
+        <div
+          onClick={(e) => {
+            e.preventDefault();
+            if (
+              DeviceMotionEvent &&
+              typeof DeviceMotionEvent.requestPermission === "function"
+            ) {
+              DeviceMotionEvent.requestPermission();
+              camON();
+              setIsPermission(true);
+            }
+          }}
+          style={{
+            position: "fixed",
+            height: "100vh",
+            width: "100vw",
+            top: 0,
+          }}></div>
+      )}
       <img
         id="ImageDownload"
         alt="data"
@@ -198,12 +229,10 @@ function CreateNewProject(props) {
       />
       {/* header */}
       <div
-        className="d-flex flex-row justify-content-between align-items-start"
-        style={{ padding: "10px 20px" }}>
+        className="d-flex flex-row justify-content-between align-items-start position-absolute"
+        style={{ padding: "10px 20px", width: "100%" }}>
         {/* left */}
-        <div>
-          <ThuocDoCanBang ref={docanbangRef} />
-        </div>
+        <div></div>
         {/* middle */}
         <div className="d-flex flex-column align-items-center">
           <div className="d-flex flex-row align-items-center">
@@ -269,9 +298,7 @@ function CreateNewProject(props) {
         {/* right */}
         <div style={{}} className="d-flex flex-column align-items-center">
           <Button
-            onClick={() => {
-              Navigation.navigate(routes.camera.path);
-            }}
+            onClick={downloadScreenshot}
             style={{
               background: "white",
               borderRadius: 9999,
@@ -304,107 +331,11 @@ function CreateNewProject(props) {
           </Button>
         </div>
       </div>
-      {/* la ban */}
-      <div style={{}} className="d-flex flex-row justify-content-center">
-        <div
-          style={{
-            width: "90%",
-            height: "40%",
-
-            overflow: "hidden",
-          }}>
-          <div
-            style={{
-              position: "relative",
-              left: crop.x,
-              top: crop.y,
-            }}>
-            <img
-              draggable={false}
-              alt=""
-              src={"/la-ban/24-son-huong.png"}
-              width="300rem"
-              ref={imageRef}
-              style={{
-                width: "100%",
-                height: "100%",
-                touchAction: "none",
-                position: "relative",
-                rotate: `${angle ? 360 - angle : 0}deg`,
-                transition: "0.1s linear",
-              }}
-            />
-            <div
-              style={{
-                width: 1,
-                height: "100%",
-                backgroundColor: "red",
-                position: "absolute",
-                top: 0,
-                left: "50%",
-                top: "0%",
-              }}
-            />
-            <div
-              style={{
-                width: "100%",
-                height: 1,
-                backgroundColor: "red",
-                position: "absolute",
-                top: "50%",
-                left: "0%",
-              }}
-            />
-          </div>
-        </div>
-      </div>
-      {/* bottom */}
-      <div
+      {/* <div
         className="d-flex flex-row justify-content-between align-items-end"
         style={{ padding: "10px 20px" }}>
-        {/* left */}
-        <div style={{ width: 50 }}>
-          {" "}
-          <p></p>
-        </div>
-        {/* middle */}
-        <div className="d-flex flex-column align-items-center">
-          <div style={{ textTransform: "uppercase", color: "white" }}>
-            Toa:{" "}
-            {todos.getDirectionPhongThuyName(
-              angle - 180 >= 0
-                ? (angle - 180).toFixed([1])
-                : (180 + Number(angle)).toFixed([1])
-            )}{" "}
-            (
-            {todos.getDirectionName(
-              angle - 180 >= 0
-                ? (angle - 180).toFixed([1])
-                : (180 + Number(angle)).toFixed([1])
-            )}
-            )
-          </div>
-
-          <div className="d-flex flex-row align-items-center">
-            <div
-              style={{
-                fontWeight: "bold",
-                backgroundColor: "white",
-                borderRadius: 8,
-                padding: "2px 10px",
-                marginRight: 8,
-              }}>
-              {angle - 180 >= 0
-                ? (angle - 180).toFixed([1])
-                : (180 + Number(angle)).toFixed([1])}
-              <span>&deg;</span>
-            </div>
-          </div>
-        </div>
-        {/* right */}
         <div style={{}} className="d-flex flex-column align-items-center">
           <Button
-            onClick={downloadScreenshot}
             style={{
               background: "white",
               borderRadius: 9999,
@@ -436,7 +367,41 @@ function CreateNewProject(props) {
               }}></Image>
           </Button>
         </div>
+      </div> */}
+
+      <video
+        id="vid"
+        height={window.innerHeight / 1.8}
+        width={window.innerWidth}
+        autoPlay></video>
+
+      {/* la ban */}
+      <div
+        style={{
+          position: "absolute",
+          bottom: "-10%",
+          zIndex: -3,
+          width: "200%",
+        }}
+        className="d-flex flex-row justify-content-center">
+        <img
+          draggable={false}
+          alt=""
+          src={"/la-ban/24-son-huong.png"}
+          ref={imageRef}
+          style={{
+            width: "100%",
+            height: "100%",
+            touchAction: "none",
+            position: "relative",
+            rotate: `${angle ? 360 - angle : 0}deg`,
+            transition: "0.1s linear",
+            objectFit: "cover",
+            transform: "translateX(-25%) translateY(30%)",
+          }}
+        />
       </div>
+
       {/* navigatorBottom */}
       <div
         className="d-flex flex-row justify-content-center position-absolute bottom-2"
@@ -478,25 +443,6 @@ function CreateNewProject(props) {
         })}
       </div>
       {/* <div id="console"></div> */}
-      {/* {!isPermission && (
-        <div
-          onClick={(e) => {
-            e.preventDefault();
-            if (
-              DeviceMotionEvent &&
-              typeof DeviceMotionEvent.requestPermission === "function"
-            ) {
-              DeviceMotionEvent.requestPermission();
-              setIsPermission(true);
-            }
-          }}
-          style={{
-            position: "fixed",
-            height: "100vh",
-            width: "100vw",
-            top: 0,
-          }}></div>
-      )} */}
       <ModalPickDegree
         data={compassPicker}
         setAngle={setAngle}
@@ -638,4 +584,4 @@ const ModalPickDegree = ({
     </Modal>
   );
 };
-export default CreateNewProject;
+export default Camera;
